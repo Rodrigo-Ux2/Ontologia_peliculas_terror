@@ -2,7 +2,7 @@
 
 Buscador facetado construido sobre una ontología OWL de películas de terror. Permite filtrar por año, tipo de monstruo, nivel de gore y búsqueda por texto usando SPARQL como motor de consulta.
 
-**Stack:** Apache Jena Fuseki (triplestore) · Express + TypeScript (API) · React (frontend — en desarrollo)
+**Stack:** Apache Jena Fuseki (triplestore) · Express + TypeScript (API) · React + TypeScript + Tailwind CSS (frontend)
 
 Referencia completa de la API: [`docs/API_FILTROS.md`](docs/API_FILTROS.md)
 
@@ -182,7 +182,161 @@ Ontologia_peliculas_terror/
         client.ts                # Cliente HTTP hacia Fuseki
         queries.ts               # Constructores de queries SPARQL
       routes/
-        peliculas.ts             # GET /api/peliculas
+        peliculas.ts             # GET /api/peliculas, GET /api/peliculas/:id
     tsconfig.json
     package.json
+  frontend/
+    src/
+      components/
+        FilterPanel.tsx          # Panel de filtros facetados
+        MovieList.tsx            # Lista de películas
+        MovieCard.tsx            # Tarjeta individual
+        MovieDetailView.tsx      # Modal con detalles
+        Icon.tsx                 # Iconos reutilizables
+      services/
+        api.ts                   # Cliente HTTP hacia backend
+      types/
+        index.ts                 # Tipos TypeScript y constantes
+      App.tsx                    # Componente principal
+      main.tsx                   # Entrada de React
+    tsconfig.json
+    package.json
+    vite.config.ts               # Configuración de Vite
+    tailwind.config.js           # Configuración de Tailwind
+  docs/
+    API_FILTROS.md              # Documentación de la API REST
 ```
+
+---
+
+## Uso rápido (3 pasos)
+
+### 1. Backend (API + SPARQL)
+
+```bash
+# Terminal 1: Inicia Fuseki (ver requisitos)
+cd ~/apache-jena-fuseki-6.1.0
+./fuseki-server --update --mem /peliculas
+
+# Terminal 2: Instala y corre backend
+cd backend
+npm install
+npm run dev
+```
+
+La API estará en `http://localhost:4000`.
+
+### 2. Frontend (Interfaz de usuario)
+
+```bash
+# Terminal 3
+cd frontend
+npm install
+npm run dev
+```
+
+Abre `http://localhost:5173` en tu navegador.
+
+### 3. Explora películas
+
+- Usa los filtros en el panel izquierdo
+- Haz clic en una película para ver detalles completos
+- Combina múltiples filtros para búsquedas precisas
+
+---
+
+## 📚 Documentación
+
+### Inicio rápido
+- [🚀 Quick Start (5 min)](docs/QUICK_START.md) — Guía paso a paso
+- [🎮 Uso del Frontend](frontend/USAGE.md) — Cómo usar la interfaz
+
+### Referencias técnicas
+- [🔌 API REST](docs/API_FILTROS.md) — Endpoints disponibles y ejemplos
+- [🏗️ Arquitectura del Sistema](docs/ARQUITECTURA.md) — Cómo funciona todo
+- [📁 Estructura Frontend](docs/FRONTEND_ESTRUCTURA.md) — Detalles del código
+
+### Desarrollo
+- [Frontend README](frontend/README.md) — Desarrollo del frontend
+- [Backend README](backend/README.md) — Desarrollo del backend (si existe)
+
+---
+
+## 🎯 Características principales
+
+✅ **Búsqueda facetada**: Filtra por 13 criterios simultáneamente
+✅ **Interfaz moderna**: React + Tailwind CSS con tema oscuro
+✅ **Ontología semántica**: OWL + RDF + SPARQL
+✅ **API REST**: Express + TypeScript
+✅ **Triplestore**: Apache Jena Fuseki
+✅ **Responsive**: Funciona en desktop, tablet y mobile
+✅ **Tipado completo**: TypeScript en frontend y backend
+
+---
+
+## 💡 Ejemplos de búsquedas
+
+**Slashers clásicos de los 80s con RT alto**
+```
+Año: 1980-1989
+Subgénero: Slasher
+Rotten Tomatoes: 80+
+```
+
+**Terror sobrenatural en Netflix**
+```
+Subgénero: Sobrenatural
+Plataforma: Netflix
+Nivel Suspenso: 8+
+```
+
+**Películas intensas basadas en hechos reales**
+```
+Basada en hechos reales: ✓
+Nivel Gore: 7+
+Nivel Suspenso: 8+
+```
+
+---
+
+## 🔍 Explorando la ontología
+
+La ontología incluye:
+
+| Concepto | Ejemplos |
+|----------|----------|
+| **Películas** | The Ring, A Quiet Place, Hereditary, etc. |
+| **Subgéneros** | Slasher, Paranormal, Psicológico, Gore, BodyHorror, etc. |
+| **Monstruos** | Fantasmas, Vampiros, Zombis, Demonios, etc. |
+| **Plataformas** | Netflix, Prime Video, HBO Max, Shudder, etc. |
+| **Países** | Estados Unidos, Japón, Francia, España, etc. |
+| **Clasificaciones** | Mayores de 13/16/18, No apta menores, Todos públicos |
+
+Cada película está conectada semánticamente con sus características, permitiendo búsquedas complejas y precisas.
+
+---
+
+## 🛠️ Stack tecnológico
+
+| Capa | Tecnología | Versión |
+|------|-----------|---------|
+| **Triplestore** | Apache Jena Fuseki | 6.1.0 |
+| **Backend** | Express | 5.2+ |
+| | TypeScript | 5.3+ |
+| | SPARQL | 1.1 |
+| **Frontend** | React | 18.2+ |
+| | TypeScript | 5.3+ |
+| | Tailwind CSS | 3.3+ |
+| | Vite | 5.0+ |
+| **Runtime** | Node.js | 20+ |
+| | Java (JRE) | 17+ |
+
+---
+
+## 📝 Licencia
+
+Este proyecto es un trabajo educativo sobre Web Semántica y Ontologías. Utiliza:
+- Apache Jena Fuseki (Licencia Apache 2.0)
+- Express.js (Licencia MIT)
+- React (Licencia MIT)
+- Tailwind CSS (Licencia MIT)
