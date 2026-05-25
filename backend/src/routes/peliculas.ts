@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 import { sparqlSelect } from "../sparql/client.js";
 import { buildBusquedaPeliculas, buildDetallePelicula } from "../sparql/queries.js";
+import { fetchDbpediaData } from "../sparql/dbpedia.js";
 
 export const peliculasRouter = Router();
 
@@ -19,6 +20,21 @@ function parseBool(val: unknown): boolean | undefined {
   if (val === "false") return false;
   return undefined;
 }
+
+peliculasRouter.get("/peliculas/:id/dbpedia", async (req: Request, res: Response) => {
+  try {
+    const id = String(req.params.id);
+    const data = await fetchDbpediaData(id);
+    if (!data) {
+      res.status(404).json({ error: "Sin enlace a DBpedia para esta película" });
+      return;
+    }
+    res.json(data);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Error desconocido";
+    res.status(500).json({ error: message });
+  }
+});
 
 peliculasRouter.get("/peliculas/:id", async (req: Request, res: Response) => {
   try {

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { MovieListItem, MovieDetail, FilterOptions } from '../types';
+import { MovieListItem, MovieDetail, FilterOptions, DbpediaData } from '../types';
 
 const API_BASE_URL = '/api';
 
@@ -33,5 +33,14 @@ export const movieService = {
   async getMovieDetail(id: string): Promise<MovieDetail> {
     const response = await api.get<MovieDetail>(`/peliculas/${id}`);
     return response.data;
+  },
+
+  async getMovieDbpedia(id: string): Promise<DbpediaData | null> {
+    try {
+      const response = await api.get<DbpediaData>(`/peliculas/${id}/dbpedia`);
+      return response.data;
+    } catch {
+      return null;
+    }
   },
 };

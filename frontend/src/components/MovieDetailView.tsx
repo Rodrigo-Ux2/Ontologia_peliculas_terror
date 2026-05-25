@@ -1,13 +1,14 @@
-import { MovieDetail } from '../types';
+import { MovieDetail, DbpediaData } from '../types';
 import { Icon } from './Icon';
 
 interface MovieDetailViewProps {
   movie: MovieDetail | null;
   loading: boolean;
+  dbpediaData?: DbpediaData | null;
   onClose: () => void;
 }
 
-export function MovieDetailView({ movie, loading, onClose }: MovieDetailViewProps) {
+export function MovieDetailView({ movie, loading, dbpediaData, onClose }: MovieDetailViewProps) {
   if (!movie && !loading) return null;
 
   return (
@@ -183,6 +184,50 @@ export function MovieDetailView({ movie, loading, onClose }: MovieDetailViewProp
               <div>
                 <h3 className="font-bold text-slate-100 mb-2">Guionistas</h3>
                 <p className="text-slate-300">{movie.guionistas.join(', ')}</p>
+              </div>
+            )}
+
+            {/* Panel DBpedia */}
+            {dbpediaData && (
+              <div className="border border-slate-600 rounded-lg p-4 bg-slate-800/50">
+                <h3 className="font-bold text-slate-100 mb-3 flex items-center gap-2">
+                  <span className="text-orange-400">DBpedia</span>
+                  <span className="text-slate-400 text-sm font-normal">— datos enlazados</span>
+                </h3>
+                <div className="flex gap-4 items-start">
+                  {dbpediaData.thumbnail && (
+                    <img
+                      src={dbpediaData.thumbnail}
+                      alt={movie.titulo}
+                      className="w-28 rounded shadow-lg flex-shrink-0 object-cover"
+                    />
+                  )}
+                  <div className="space-y-2 text-sm">
+                    <p className="text-slate-400 break-all">
+                      <span className="text-slate-300 font-medium">URI: </span>
+                      <a
+                        href={dbpediaData.dbpediaUri}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-orange-400 hover:underline"
+                      >
+                        {dbpediaData.dbpediaUri}
+                      </a>
+                    </p>
+                    {dbpediaData.wikiPage && (
+                      <p>
+                        <a
+                          href={dbpediaData.wikiPage}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1 bg-slate-700 hover:bg-slate-600 text-white px-3 py-1.5 rounded transition"
+                        >
+                          Ver en Wikipedia →
+                        </a>
+                      </p>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
           </div>

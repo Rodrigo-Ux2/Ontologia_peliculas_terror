@@ -335,8 +335,7 @@ Cada película está conectada semánticamente con sus características, permiti
 
 ## 📝 Licencia
 
-Este proyecto es un trabajo educativo sobre Web Semántica y Ontologías. Utiliza:
-- Apache Jena Fuseki (Licencia Apache 2.0)
+
 - Express.js (Licencia MIT)
 - React (Licencia MIT)
 - Tailwind CSS (Licencia MIT)

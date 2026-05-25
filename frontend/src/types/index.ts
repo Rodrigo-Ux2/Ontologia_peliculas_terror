@@ -30,6 +30,12 @@ export interface MovieDetail {
   monstruos: string[];
 }
 
+export interface DbpediaData {
+  dbpediaUri: string;
+  thumbnail: string | null;
+  wikiPage: string | null;
+}
+
 export interface FilterOptions {
   anioMin?: number;
   anioMax?: number;

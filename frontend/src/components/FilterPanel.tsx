@@ -22,11 +22,12 @@ export function FilterPanel({ filters, onFilterChange }: FilterPanelProps) {
         <label className="block text-sm font-medium text-slate-200 mb-2">Buscar película</label>
         <input
           type="text"
-          placeholder="Título de la película..."
+          placeholder="Ej: fantasma 1990-2010"
           value={filters.q || ''}
           onChange={(e) => handleChange('q', e.target.value || undefined)}
           className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded text-slate-100 placeholder-slate-500 focus:outline-none focus:border-red-500"
         />
+        <p className="mt-2 text-xs text-slate-400">Escribe palabras clave y años (por ejemplo: <span className="text-slate-200">fantasma 1990-2010</span>).</p>
       </div>
 
       {/* Rango de años */}
