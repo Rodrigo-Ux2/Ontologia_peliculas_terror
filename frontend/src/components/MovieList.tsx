@@ -32,7 +32,7 @@ export function MovieList({ movies, loading, onMovieClick }: MovieListProps) {
   return (
     <div className="col-span-1 md:col-span-2">
       <h2 className="text-2xl font-bold text-slate-100 mb-4">{movies.length} películas encontradas</h2>
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {movies.map((movie) => (
           <MovieCard
             key={movie.iri}

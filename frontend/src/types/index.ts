@@ -34,6 +34,21 @@ export interface DbpediaData {
   dbpediaUri: string;
   thumbnail: string | null;
   wikiPage: string | null;
+  abstract: string | null;
+  budget: number | null;
+  gross: number | null;
+  runtime: number | null;
+  country: string | null;
+  language: string | null;
+  directors: string[];
+  actors: string[];
+  writers: string[];
+  genres: string[];
+  producers: string[];
+  productionCompanies: string[];
+  distributors: string[];
+  musicComposers: string[];
+  source: 'online' | 'offline' | 'none';
 }
 
 export interface FilterOptions {

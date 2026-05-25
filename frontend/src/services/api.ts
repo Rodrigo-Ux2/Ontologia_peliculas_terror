@@ -35,12 +35,19 @@ export const movieService = {
     return response.data;
   },
 
-  async getMovieDbpedia(id: string): Promise<DbpediaData | null> {
+  async getMovieDbpedia(id: string, mode: 'online' | 'offline' | 'auto' = 'auto'): Promise<DbpediaData | null> {
     try {
-      const response = await api.get<DbpediaData>(`/peliculas/${id}/dbpedia`);
+      const response = await api.get<DbpediaData>(`/peliculas/${id}/dbpedia`, {
+        params: { mode },
+      });
       return response.data;
     } catch {
       return null;
     }
+  },
+
+  async sparqlQuery(query: string): Promise<any> {
+    const response = await api.post('/sparql', { query });
+    return response.data;
   },
 };

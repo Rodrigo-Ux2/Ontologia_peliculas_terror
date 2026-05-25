@@ -190,10 +190,22 @@ export function MovieDetailView({ movie, loading, dbpediaData, onClose }: MovieD
             {/* Panel DBpedia */}
             {dbpediaData && (
               <div className="border border-slate-600 rounded-lg p-4 bg-slate-800/50">
-                <h3 className="font-bold text-slate-100 mb-3 flex items-center gap-2">
-                  <span className="text-orange-400">DBpedia</span>
-                  <span className="text-slate-400 text-sm font-normal">— datos enlazados</span>
-                </h3>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-bold text-slate-100 flex items-center gap-2">
+                    <span className="text-orange-400">DBpedia</span>
+                    <span className="text-slate-400 text-sm font-normal">— datos enlazados</span>
+                  </h3>
+                  <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                    dbpediaData.source === 'online'
+                      ? 'bg-green-900 text-green-300'
+                      : dbpediaData.source === 'offline'
+                      ? 'bg-blue-900 text-blue-300'
+                      : 'bg-slate-700 text-slate-400'
+                  }`}>
+                    {dbpediaData.source === 'online' ? 'Online' : dbpediaData.source === 'offline' ? 'Offline' : 'No disponible'}
+                  </span>
+                </div>
+
                 <div className="flex gap-4 items-start">
                   {dbpediaData.thumbnail && (
                     <img
@@ -202,7 +214,7 @@ export function MovieDetailView({ movie, loading, dbpediaData, onClose }: MovieD
                       className="w-28 rounded shadow-lg flex-shrink-0 object-cover"
                     />
                   )}
-                  <div className="space-y-2 text-sm">
+                  <div className="space-y-2 text-sm flex-1 min-w-0">
                     <p className="text-slate-400 break-all">
                       <span className="text-slate-300 font-medium">URI: </span>
                       <a
@@ -228,6 +240,96 @@ export function MovieDetailView({ movie, loading, dbpediaData, onClose }: MovieD
                     )}
                   </div>
                 </div>
+
+                {/* Datos enriquecidos desde DBpedia */}
+                {(dbpediaData.abstract || dbpediaData.budget || dbpediaData.gross || dbpediaData.runtime || dbpediaData.country || dbpediaData.language || dbpediaData.genres.length > 0 || dbpediaData.directors.length > 0 || dbpediaData.actors.length > 0) && (
+                  <div className="mt-4 pt-4 border-t border-slate-700 space-y-3">
+                    <h4 className="text-sm font-semibold text-orange-400">Datos enriquecidos desde DBpedia</h4>
+
+                    {dbpediaData.abstract && (
+                      <div>
+                        <p className="text-xs text-slate-400 mb-1">Sinopsis (DBpedia)</p>
+                        <p className="text-slate-300 text-sm leading-relaxed">
+                          {dbpediaData.abstract.length > 400
+                            ? dbpediaData.abstract.slice(0, 400) + '...'
+                            : dbpediaData.abstract}
+                        </p>
+                      </div>
+                    )}
+
+                    <div className="grid grid-cols-2 gap-3">
+                      {dbpediaData.budget && (
+                        <div className="bg-slate-800 rounded p-2">
+                          <p className="text-xs text-slate-400">Presupuesto</p>
+                          <p className="text-slate-200 text-sm">${(dbpediaData.budget / 1000000).toFixed(1)}M</p>
+                        </div>
+                      )}
+                      {dbpediaData.gross && (
+                        <div className="bg-slate-800 rounded p-2">
+                          <p className="text-xs text-slate-400">Recaudación</p>
+                          <p className="text-slate-200 text-sm">${(dbpediaData.gross / 1000000).toFixed(1)}M</p>
+                        </div>
+                      )}
+                      {dbpediaData.runtime && (
+                        <div className="bg-slate-800 rounded p-2">
+                          <p className="text-xs text-slate-400">Duración</p>
+                          <p className="text-slate-200 text-sm">{dbpediaData.runtime} min</p>
+                        </div>
+                      )}
+                      {dbpediaData.country && (
+                        <div className="bg-slate-800 rounded p-2">
+                          <p className="text-xs text-slate-400">País</p>
+                          <p className="text-slate-200 text-sm">{dbpediaData.country}</p>
+                        </div>
+                      )}
+                      {dbpediaData.language && (
+                        <div className="bg-slate-800 rounded p-2">
+                          <p className="text-xs text-slate-400">Idioma</p>
+                          <p className="text-slate-200 text-sm">{dbpediaData.language}</p>
+                        </div>
+                      )}
+                    </div>
+
+                    {dbpediaData.genres.length > 0 && (
+                      <div>
+                        <p className="text-xs text-slate-400 mb-1">Géneros (DBpedia)</p>
+                        <div className="flex flex-wrap gap-1">
+                          {dbpediaData.genres.map((g) => (
+                            <span key={g} className="bg-orange-900/60 text-orange-200 px-2 py-0.5 rounded text-xs">{g}</span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {dbpediaData.directors.length > 0 && (
+                      <div>
+                        <p className="text-xs text-slate-400 mb-1">Directores (DBpedia)</p>
+                        <p className="text-slate-300 text-sm">{dbpediaData.directors.join(', ')}</p>
+                      </div>
+                    )}
+
+                    {dbpediaData.actors.length > 0 && (
+                      <div>
+                        <p className="text-xs text-slate-400 mb-1">Actores (DBpedia)</p>
+                        <p className="text-slate-300 text-sm">{dbpediaData.actors.slice(0, 6).join(', ')}</p>
+                      </div>
+                    )}
+
+                    {dbpediaData.productionCompanies.length > 0 && (
+                      <div>
+                        <p className="text-xs text-slate-400 mb-1">Productoras</p>
+                        <p className="text-slate-300 text-sm">{dbpediaData.productionCompanies.join(', ')}</p>
+                      </div>
+                    )}
+
+                    {dbpediaData.musicComposers.length > 0 && (
+                      <div>
+                        <p className="text-xs text-slate-400 mb-1">Compositores</p>
+                        <p className="text-slate-300 text-sm">{dbpediaData.musicComposers.join(', ')}</p>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
           </div>
