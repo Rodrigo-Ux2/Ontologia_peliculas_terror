@@ -65,6 +65,7 @@ export interface FilterOptions {
   pais?: string;
   idioma?: string;
   basadaEnHechosReales?: boolean;
+  escenario?: string;
   q?: string;
 }
 

@@ -66,7 +66,9 @@ export type Filtros = {
   idioma?: string;
   // Booleano
   basadaEnHechosReales?: boolean;
-  // Búsqueda libre
+  // Búsqueda de escenario (parcial, contra IRI de tieneEscenario y ambientacion)
+  escenario?: string;
+  // Búsqueda libre (título, sinopsis, ambientacion)
   textoLibre?: string;
 };
 
@@ -189,10 +191,26 @@ export function buildBusquedaPeliculas(f: Filtros): string {
     where.push(`?pelicula :basadaEnHechosReales "${val}"^^xsd:boolean .`);
   }
 
-  // Búsqueda libre sobre el título
+  // Escenario: busca en el IRI de tieneEscenario y en el literal de ambientacion
+  if (f.escenario) {
+    const safeEsc = escapeLiteral(f.escenario);
+    where.push(`{
+    { ?pelicula :tieneEscenario ?_escObj . FILTER(CONTAINS(LCASE(STRAFTER(STR(?_escObj), "#")), LCASE("${safeEsc}"))) }
+    UNION
+    { ?pelicula :ambientacion ?_ambLit . FILTER(CONTAINS(LCASE(?_ambLit), LCASE("${safeEsc}"))) }
+  }`);
+  }
+
+  // Búsqueda libre: título, sinopsis y ambientacion
   if (f.textoLibre) {
     const safe = escapeLiteral(f.textoLibre);
-    where.push(`?pelicula :titulo ?tituloSearch . FILTER(CONTAINS(LCASE(?tituloSearch), LCASE("${safe}")))`);
+    where.push(`{
+    { ?pelicula :titulo ?_tSearch . FILTER(CONTAINS(LCASE(?_tSearch), LCASE("${safe}"))) }
+    UNION
+    { ?pelicula :sinopsis ?_sSearch . FILTER(CONTAINS(LCASE(?_sSearch), LCASE("${safe}"))) }
+    UNION
+    { ?pelicula :ambientacion ?_aSearch . FILTER(CONTAINS(LCASE(?_aSearch), LCASE("${safe}"))) }
+  }`);
   }
 
   return `${PREFIX}

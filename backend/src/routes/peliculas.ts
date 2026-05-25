@@ -104,6 +104,7 @@ peliculasRouter.get("/peliculas", async (req: Request, res: Response) => {
       pais:                parseStr(req.query.pais),
       idioma:              parseStr(req.query.idioma),
       basadaEnHechosReales: parseBool(req.query.basadaEnHechosReales),
+      escenario:           parseStr(req.query.escenario),
       textoLibre:          parseStr(req.query.q),
     };
 

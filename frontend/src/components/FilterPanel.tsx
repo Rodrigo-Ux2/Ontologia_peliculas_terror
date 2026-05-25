@@ -2,10 +2,11 @@ import { FilterOptions, TIPO_MONSTRUO_OPTIONS, SUBGENERO_OPTIONS, PLATAFORMA_OPT
 
 interface FilterPanelProps {
   filters: FilterOptions;
+  searchText: string;
   onFilterChange: (filters: FilterOptions) => void;
 }
 
-export function FilterPanel({ filters, onFilterChange }: FilterPanelProps) {
+export function FilterPanel({ filters, searchText, onFilterChange }: FilterPanelProps) {
   const handleChange = <K extends keyof FilterOptions>(key: K, value: FilterOptions[K]) => {
     onFilterChange({
       ...filters,
@@ -22,8 +23,8 @@ export function FilterPanel({ filters, onFilterChange }: FilterPanelProps) {
         <label className="block text-sm font-medium text-slate-200 mb-2">Buscar película</label>
         <input
           type="text"
-          placeholder="Ej: fantasma 1990-2010"
-          value={filters.q || ''}
+          placeholder="Ej: año 2013, asesino en un bosque"
+          value={searchText}
           onChange={(e) => handleChange('q', e.target.value || undefined)}
           className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded text-slate-100 placeholder-slate-500 focus:outline-none focus:border-red-500"
         />

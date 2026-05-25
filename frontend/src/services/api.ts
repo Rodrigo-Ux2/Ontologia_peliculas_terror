@@ -24,6 +24,7 @@ export const movieService = {
     if (filters.pais) params.append('pais', filters.pais);
     if (filters.idioma) params.append('idioma', filters.idioma);
     if (filters.basadaEnHechosReales !== undefined) params.append('basadaEnHechosReales', filters.basadaEnHechosReales.toString());
+    if (filters.escenario) params.append('escenario', filters.escenario);
     if (filters.q) params.append('q', filters.q);
 
     const response = await api.get<MovieListItem[]>('/peliculas', { params });

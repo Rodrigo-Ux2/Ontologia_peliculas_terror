@@ -8,62 +8,127 @@ import { MovieDetail, FilterOptions, DbpediaData } from './types';
 import { Icon } from './components/Icon';
 import './App.css';
 
-const SEMANTIC_MONSTER_MAP: Record<string, string> = {
-  fantasma: 'Fantasma',
-  demonio: 'Demonio',
-  vampiro: 'Vampiro',
-  zombi: 'Zombi',
-  hombrelobo: 'HombreLobo',
-  extraterrestre: 'Extraterrestre',
-  asesinoserial: 'AsesinoSerial',
-  monstruo: 'Monstruo_Fisico',
-};
+// Orden importa: frases compuestas primero para que no sean absorbidas por palabras sueltas
+const SEMANTIC_MONSTER_MAP: [string, string][] = [
+  ['asesino serial', 'AsesinoSerial'],
+  ['asesino en serie', 'AsesinoSerial'],
+  ['hombre lobo', 'HombreLobo'],
+  ['monstruo fisico', 'Monstruo_Fisico'],
+  ['monstruo físico', 'Monstruo_Fisico'],
+  ['fantasma', 'Fantasma'],
+  ['demonio', 'Demonio'],
+  ['vampiro', 'Vampiro'],
+  ['zombi', 'Zombi'],
+  ['zombie', 'Zombi'],
+  ['zombies', 'Zombi'],
+  ['lobo', 'HombreLobo'],
+  ['extraterrestre', 'Extraterrestre'],
+  ['alien', 'Extraterrestre'],
+  ['asesino', 'AsesinoSerial'],
+  ['monstruo', 'Monstruo_Fisico'],
+];
 
-const SEMANTIC_SUBGENERO_MAP: Record<string, string> = {
-  slasher: 'Slasher',
-  sobrenatural: 'Sobrenatural',
-  psicologico: 'TerrorPsicologico',
-  gore: 'BodyHorror',
-  'body horror': 'BodyHorror',
-  'found footage': 'FoundFootage',
-  'terror historico': 'TerrorHistorico',
-  'terror supervivencia': 'TerrorSupervivencia',
-  'comedia terror': 'ComediaTerror',
-};
+const SEMANTIC_SUBGENERO_MAP: [string, string][] = [
+  ['body horror', 'BodyHorror'],
+  ['found footage', 'FoundFootage'],
+  ['terror psicologico', 'TerrorPsicologico'],
+  ['terror psicológico', 'TerrorPsicologico'],
+  ['terror historico', 'TerrorHistorico'],
+  ['terror histórico', 'TerrorHistorico'],
+  ['terror supervivencia', 'TerrorSupervivencia'],
+  ['comedia terror', 'ComediaTerror'],
+  ['slasher', 'Slasher'],
+  ['sobrenatural', 'Sobrenatural'],
+  ['psicologico', 'TerrorPsicologico'],
+  ['psicológico', 'TerrorPsicologico'],
+  ['supervivencia', 'TerrorSupervivencia'],
+  ['historico', 'TerrorHistorico'],
+  ['histórico', 'TerrorHistorico'],
+  ['gore', 'BodyHorror'],
+];
+
+// Palabras clave de escenario → término de búsqueda que se enviará al backend
+const SEMANTIC_ESCENARIO_MAP: [string, string][] = [
+  ['bosque oscuro', 'bosque'],
+  ['en el bosque', 'bosque'],
+  ['en un bosque', 'bosque'],
+  ['bosque', 'bosque'],
+  ['casa abandonada', 'casa'],
+  ['casa embrujada', 'casa'],
+  ['en una casa', 'casa'],
+  ['en la casa', 'casa'],
+  ['mansion', 'mansion'],
+  ['mansión', 'mansion'],
+  ['hospital', 'hospital'],
+  ['manicomio', 'manicomio'],
+  ['escuela', 'escuela'],
+  ['ciudad', 'ciudad'],
+  ['pueblo', 'pueblo'],
+  ['espacio', 'espacio'],
+  ['nave espacial', 'nave'],
+  ['hotel', 'hotel'],
+  ['cabaña', 'cabaña'],
+  ['cabana', 'cabaña'],
+  ['granja', 'granja'],
+  ['lago', 'lago'],
+  ['submarino', 'submarino'],
+  ['oceano', 'oceano'],
+  ['océano', 'oceano'],
+  ['mar', 'mar'],
+];
+
+// Stopwords que no aportan nada como búsqueda libre de título
+const STOPWORDS = new Set([
+  'año', 'en', 'un', 'una', 'de', 'del', 'el', 'la', 'los', 'las',
+  'con', 'y', 'a', 'al', 'que', 'por', 'para', 'se', 'su', 'sus',
+  'como', 'pero', 'si', 'no', 'lo', 'le', 'les', 'era', 'fue',
+  'sobre', 'entre', 'donde', 'hay', 'esto', 'esta', 'este',
+]);
+
+function stripKeyword(text: string, keyword: string): string {
+  // Elimina la keyword completa como palabra/frase, no fragmento de palabra
+  const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return text.replace(new RegExp(`(?<![\\wáéíóúñ])${escaped}(?![\\wáéíóúñ])`, 'gi'), '');
+}
 
 function parseSemanticSearch(query: string): Partial<FilterOptions> {
   const semantic: Partial<FilterOptions> = {};
   let remainder = query.toLowerCase().trim();
 
-  // Detectar tipo de monstruo y eliminarlo del texto restante
-  for (const [keyword, tipo] of Object.entries(SEMANTIC_MONSTER_MAP)) {
-    if (remainder.includes(keyword)) {
-      semantic.tipoMonstruo = tipo;
-      remainder = remainder.replace(keyword, '');
-      break;
-    }
-  }
-
-  // Detectar subgénero y eliminarlo del texto restante
-  for (const [keyword, subgenero] of Object.entries(SEMANTIC_SUBGENERO_MAP)) {
+  // Detectar subgénero (frases primero)
+  for (const [keyword, subgenero] of SEMANTIC_SUBGENERO_MAP) {
     if (remainder.includes(keyword)) {
       semantic.subgenero = subgenero;
-      remainder = remainder.replace(keyword, '');
+      remainder = stripKeyword(remainder, keyword);
       break;
     }
   }
 
-  // Detectar rangos de años como "de 1990 a 2010" o "1990-2010" en el texto ya limpio
+  // Detectar tipo de monstruo (frases compuestas primero)
+  for (const [keyword, tipo] of SEMANTIC_MONSTER_MAP) {
+    if (remainder.includes(keyword)) {
+      semantic.tipoMonstruo = tipo;
+      remainder = stripKeyword(remainder, keyword);
+      break;
+    }
+  }
+
+  // Detectar escenario
+  for (const [keyword, escenario] of SEMANTIC_ESCENARIO_MAP) {
+    if (remainder.includes(keyword)) {
+      semantic.escenario = escenario;
+      remainder = stripKeyword(remainder, keyword);
+      break;
+    }
+  }
+
+  // Detectar rangos de años: "de 1990 a 2010" o "1990-2010"
   const rangeMatch = remainder.match(/(?:de|from)?\s*(19|20)\d{2}\s*(?:a|to|-)\s*(19|20)\d{2}/);
   if (rangeMatch) {
     const years = rangeMatch[0].match(/(19|20)\d{2}/g)!;
-    const startYear = Number(years[0]);
-    const endYear = Number(years[1]);
-    if (!Number.isNaN(startYear) && !Number.isNaN(endYear)) {
-      semantic.anioMin = Math.min(startYear, endYear);
-      semantic.anioMax = Math.max(startYear, endYear);
-      remainder = remainder.replace(rangeMatch[0], '');
-    }
+    semantic.anioMin = Math.min(Number(years[0]), Number(years[1]));
+    semantic.anioMax = Math.max(Number(years[0]), Number(years[1]));
+    remainder = remainder.replace(rangeMatch[0], '');
   } else {
     const yearMatches = Array.from(remainder.matchAll(/\b(19|20)\d{2}\b/g)).map((m) => Number(m[0]));
     if (yearMatches.length >= 2) {
@@ -77,10 +142,14 @@ function parseSemanticSearch(query: string): Partial<FilterOptions> {
     }
   }
 
-  // Solo incluir q si queda texto que no sea semántico (p.ej. "ring", "el conjuro")
-  const cleanRemainder = remainder.replace(/\s+/g, ' ').trim();
-  if (cleanRemainder) {
-    semantic.q = cleanRemainder;
+  // Eliminar puntuación suelta y stopwords del texto restante
+  remainder = remainder.replace(/[,;:.!?¿¡]/g, ' ');
+  const meaningfulWords = remainder
+    .split(/\s+/)
+    .filter((w) => w.length > 1 && !STOPWORDS.has(w));
+
+  if (meaningfulWords.length > 0) {
+    semantic.q = meaningfulWords.join(' ');
   }
 
   return semantic;
@@ -89,6 +158,7 @@ function parseSemanticSearch(query: string): Partial<FilterOptions> {
 function App() {
   const [tab, setTab] = useState<'movies' | 'sparql'>('movies');
   const [filters, setFilters] = useState<FilterOptions>({});
+  const [searchText, setSearchText] = useState('');
   const [movies, setMovies] = useState<any[]>([]);
   const [sparqlQuery, setSparqlQuery] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState(false);
@@ -99,14 +169,18 @@ function App() {
 
   const handleFilterChange = (nextFilters: FilterOptions) => {
     if (nextFilters.q !== undefined) {
+      // Guarda el texto crudo para mostrarlo en el input sin alterarlo
+      setSearchText(nextFilters.q);
       const semantic = parseSemanticSearch(nextFilters.q);
       setFilters({
         ...nextFilters,
         ...semantic,
-        // Sobreescribir q con el texto residual limpio (undefined si fue todo semántico)
+        // q solo contiene el texto residual con significado (puede ser undefined)
         q: semantic.q,
       });
     } else {
+      // Limpiar filtros también vacía el buscador
+      setSearchText('');
       setFilters(nextFilters);
     }
   };
@@ -211,7 +285,7 @@ function App() {
         {tab === 'movies' ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="md:col-span-1">
-              <FilterPanel filters={filters} onFilterChange={handleFilterChange} />
+              <FilterPanel filters={filters} searchText={searchText} onFilterChange={handleFilterChange} />
             </div>
             <div className="md:col-span-2">
               <MovieList
