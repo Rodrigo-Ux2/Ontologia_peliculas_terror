@@ -134,6 +134,25 @@ npm run dev
 
 La API queda disponible en `http://localhost:4000`.
 
+### 5. Cargar enlaces owl:sameAs a DBpedia
+
+Conecta cada película de la ontología con su recurso en DBpedia:
+
+**Linux:**
+```bash
+curl -X POST "http://localhost:3030/peliculas/data" \
+  --upload-file backend/dbpedia-links.ttl \
+  -H "Content-Type: text/turtle"
+```
+
+**Windows (PowerShell):**
+```powershell
+Invoke-RestMethod -Uri "http://localhost:3030/peliculas/data" `
+  -Method Post `
+  -InFile "backend/dbpedia-links.ttl" `
+  -ContentType "text/turtle"
+```
+
 ---
 
 ## API — Endpoints disponibles
@@ -167,6 +186,71 @@ curl "http://localhost:4000/api/peliculas/AQuietPlace2018"
 
 El `:id` se obtiene del campo `iri` del listado (fragmento después del `#`).
 
+### `POST /api/sparql`
+
+Ejecuta consultas SPARQL directamente contra Fuseki desde la API.
+
+**Cuerpo:** `{ "query": "..." }` (JSON)
+**Soporta:** SELECT, ASK, CONSTRUCT, DESCRIBE, INSERT, DELETE, UPDATE
+
+```bash
+curl -X POST "http://localhost:4000/api/sparql" \
+  -H "Content-Type: application/json" \
+  -d '{"query": "SELECT ?s ?p ?o WHERE { ?s ?p ?o } LIMIT 5"}'
+```
+
+También puedes usar la **Consola SPARQL** integrada desde el frontend (pestaña SPARQL) con ejemplos precargados.
+
+---
+
+## Integración con DBpedia
+
+El proyecto se conecta con [DBpedia](https://dbpedia.org) para enriquecer los datos de cada película. Cada recurso local está vinculado mediante `owl:sameAs` a su equivalente en DBpedia.
+
+### Modos de consulta
+
+Usa el selector **Auto / Online / Offline** en el header del frontend:
+
+| Modo | Comportamiento |
+|------|---------------|
+| **Auto** (default) | Intenta leer del cache local; si no hay datos, consulta DBpedia en vivo |
+| **Online** | Consulta DBpedia en vivo siempre (requiere internet) |
+| **Offline** | Lee solo del cache local (sin internet) |
+
+### Datos recuperados
+
+| Campo | Propiedad DBpedia | Descripción |
+|-------|-------------------|-------------|
+| Thumbnail | `dbo:thumbnail` | Póster o imagen representativa |
+| Wikipedia | `foaf:isPrimaryTopicOf` | Enlace al artículo de Wikipedia |
+| Abstract | `dbo:abstract` | Sinopsis (inglés) |
+| Presupuesto | `dbo:budget` / `dbp:budget` | Presupuesto de producción |
+| Recaudación | `dbo:gross` / `dbp:gross` | Recaudación mundial |
+| Duración | `dbo:runtime` / `dbp:runtime` | Duración en minutos |
+| País | `dbo:country` / `dbo:countryOfOrigin` | País de origen |
+| Idioma | `dbo:language` | Idioma original |
+| Directores | `dbo:director` | Nombre(s) del director |
+| Actores | `dbo:starring` | Reparto principal |
+| Guionistas | `dbo:writer` | Guionista(s) |
+| Géneros | `dbo:genre` | Género(s) cinematográfico(s) |
+| Productores | `dbo:producer` | Productor(es) |
+| Productoras | `dbo:productionCompany` | Compañía(s) productora(s) |
+| Distribuidores | `dbo:distributor` | Distribuidora(s) |
+| Compositores | `dbo:musicBy` | Compositor(es) musical(es) |
+
+> **Nota:** No todas las películas tienen todos los campos. DBpedia es incompleto y algunas consultas pueden exceder el tiempo de espera (20s) para películas con muchos datos asociados. Los campos vacíos no indican necesariamente un error.
+
+### Cache offline
+
+Para usar el modo offline sin conexión a internet, descarga previamente los datos:
+
+```bash
+cd backend
+npm run download-dbpedia
+```
+
+Esto genera `backend/data/dbpedia-cache.json` con los datos de todas las películas. La descarga requiere internet una sola vez.
+
 ---
 
 ## Estructura del proyecto
@@ -175,36 +259,43 @@ El `:id` se obtiene del campo `iri` del listado (fragmento después del `#`).
 Ontologia_peliculas_terror/
   OntologiaPeliculasTerror.owl   # Ontología fuente (Protégé)
   ontologia.rdf                  # Ontología convertida para Fuseki
-  backend/
-    src/
-      index.ts                   # Servidor Express en :4000
-      sparql/
-        client.ts                # Cliente HTTP hacia Fuseki
-        queries.ts               # Constructores de queries SPARQL
-      routes/
-        peliculas.ts             # GET /api/peliculas, GET /api/peliculas/:id
-    tsconfig.json
-    package.json
-  frontend/
-    src/
-      components/
-        FilterPanel.tsx          # Panel de filtros facetados
-        MovieList.tsx            # Lista de películas
-        MovieCard.tsx            # Tarjeta individual
-        MovieDetailView.tsx      # Modal con detalles
-        Icon.tsx                 # Iconos reutilizables
-      services/
-        api.ts                   # Cliente HTTP hacia backend
-      types/
-        index.ts                 # Tipos TypeScript y constantes
-      App.tsx                    # Componente principal
-      main.tsx                   # Entrada de React
-    tsconfig.json
-    package.json
-    vite.config.ts               # Configuración de Vite
-    tailwind.config.js           # Configuración de Tailwind
-  docs/
-    API_FILTROS.md              # Documentación de la API REST
+   backend/
+     src/
+       index.ts                   # Servidor Express en :4000
+       sparql/
+         client.ts                # Cliente HTTP hacia Fuseki
+         queries.ts               # Constructores de queries SPARQL
+         dbpedia.ts               # Servicio DBpedia (online/offline)
+         download-dbpedia.ts      # Script para precargar cache offline
+       routes/
+         peliculas.ts             # GET /api/peliculas, GET /api/peliculas/:id, /:id/dbpedia
+         sparql.ts                # POST /api/sparql (proxy a Fuseki)
+     dbpedia-links.ttl            # 55 enlaces owl:sameAs a DBpedia
+     data/
+       dbpedia-cache.json         # Cache offline de DBpedia
+     tsconfig.json
+     package.json
+   frontend/
+     src/
+       components/
+         FilterPanel.tsx          # Panel de filtros facetados
+         MovieList.tsx            # Lista de películas
+         MovieCard.tsx            # Tarjeta individual
+         MovieDetailView.tsx      # Modal con detalles + panel DBpedia
+         SparqlConsole.tsx        # Consola SPARQL interactiva
+         Icon.tsx                 # Iconos reutilizables
+       services/
+         api.ts                   # Cliente HTTP hacia backend
+       types/
+         index.ts                 # Tipos TypeScript y constantes
+       App.tsx                    # Componente principal (tabs + selector DBpedia)
+       main.tsx                   # Entrada de React
+     tsconfig.json
+     package.json
+     vite.config.ts               # Configuración de Vite
+     tailwind.config.js           # Configuración de Tailwind
+   docs/
+     API_FILTROS.md              # Documentación de la API REST
 ```
 
 ---
@@ -271,6 +362,9 @@ Abre `http://localhost:5173` en tu navegador.
 ✅ **Triplestore**: Apache Jena Fuseki
 ✅ **Responsive**: Funciona en desktop, tablet y mobile
 ✅ **Tipado completo**: TypeScript en frontend y backend
+✅ **Consola SPARQL**: Editor de consultas SPARQL integrado en el frontend
+✅ **DBpedia online/offline**: Datos enriquecidos desde DBpedia con modo offline
+✅ **Enlace semántico**: Conexión owl:sameAs entre ontología local y DBpedia
 
 ---
 
@@ -328,6 +422,7 @@ Cada película está conectada semánticamente con sus características, permiti
 | | TypeScript | 5.3+ |
 | | Tailwind CSS | 3.3+ |
 | | Vite | 5.0+ |
+| **Enlace de datos** | DBpedia SPARQL | Online / Offline |
 | **Runtime** | Node.js | 20+ |
 | | Java (JRE) | 17+ |
 
