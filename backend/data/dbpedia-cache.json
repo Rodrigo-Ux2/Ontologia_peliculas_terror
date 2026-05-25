@@ -1,0 +1,1762 @@
+[
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/A_Quiet_Place_(film)",
+    "thumbnail": null,
+    "wikiPage": null,
+    "abstract": null,
+    "budget": null,
+    "gross": null,
+    "runtime": null,
+    "country": null,
+    "language": null,
+    "directors": [],
+    "actors": [],
+    "writers": [],
+    "genres": [],
+    "producers": [],
+    "productionCompanies": [],
+    "distributors": [],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "AQuietPlace2018"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Alien_(film)",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Alien_movie_poster.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/Alien_(film)",
+    "abstract": null,
+    "budget": 8,
+    "gross": 188000000,
+    "runtime": 116,
+    "country": null,
+    "language": null,
+    "directors": [],
+    "actors": [],
+    "writers": [],
+    "genres": [],
+    "producers": [],
+    "productionCompanies": [],
+    "distributors": [],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "Alien1979"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Annabelle_(film)",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Annabelle_film_poster.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/Annabelle_(film)",
+    "abstract": null,
+    "budget": 6500000,
+    "gross": 257600000,
+    "runtime": 99,
+    "country": null,
+    "language": null,
+    "directors": [
+      "John R. Leonetti"
+    ],
+    "actors": [
+      "Alfre Woodard",
+      "Ward Horton",
+      "Annabelle Wallis"
+    ],
+    "writers": [
+      "Gary Dauberman"
+    ],
+    "genres": [],
+    "producers": [
+      "Peter Safran",
+      "James Wan"
+    ],
+    "productionCompanies": [
+      "RatPac Entertainment",
+      "New Line Cinema",
+      "Atomic Monster",
+      "The Safran Company"
+    ],
+    "distributors": [
+      "Warner Bros. Pictures"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "Annabelle2014"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Audition_(film)",
+    "thumbnail": null,
+    "wikiPage": null,
+    "abstract": null,
+    "budget": null,
+    "gross": null,
+    "runtime": null,
+    "country": null,
+    "language": null,
+    "directors": [],
+    "actors": [],
+    "writers": [],
+    "genres": [],
+    "producers": [],
+    "productionCompanies": [],
+    "distributors": [],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "Audition1999"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Evil_Dead_Rise",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/EvilDeadRiseTeaser.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/Evil_Dead_Rise",
+    "abstract": null,
+    "budget": 15,
+    "gross": 147000000,
+    "runtime": 97,
+    "country": null,
+    "language": null,
+    "directors": [
+      "Lee Cronin (director)"
+    ],
+    "actors": [
+      "Lily Sullivan",
+      "Morgan Davies",
+      "Alyssa Sutherland"
+    ],
+    "writers": [
+      "Lee Cronin (director)"
+    ],
+    "genres": [],
+    "producers": [
+      "Rob Tapert"
+    ],
+    "productionCompanies": [],
+    "distributors": [
+      "Warner Bros. Pictures"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "BarbHorror2023"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/The_Blair_Witch_Project",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Blair_Witch_Project.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/The_Blair_Witch_Project",
+    "abstract": null,
+    "budget": 200000750000,
+    "gross": 248600000,
+    "runtime": 81,
+    "country": null,
+    "language": null,
+    "directors": [],
+    "actors": [],
+    "writers": [],
+    "genres": [],
+    "producers": [],
+    "productionCompanies": [],
+    "distributors": [],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "Blair1999"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/The_Cabinet_of_Dr._Caligari",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Das_Cabinet_des_Dr._Caligari.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/The_Cabinet_of_Dr._Caligari",
+    "abstract": null,
+    "budget": 12371,
+    "gross": 4713,
+    "runtime": 74,
+    "country": "http://dbpedia.org/resource/Germany",
+    "language": null,
+    "directors": [
+      "Robert Wiene"
+    ],
+    "actors": [
+      "Lil Dagover",
+      "Rudolf Lettinger",
+      "Hans Heinrich von Twardowski",
+      "Werner Krauss",
+      "Conrad Veidt",
+      "Friedrich Feher"
+    ],
+    "writers": [
+      "Carl Mayer",
+      "Hans Janowitz"
+    ],
+    "genres": [],
+    "producers": [],
+    "productionCompanies": [
+      "Decla Film"
+    ],
+    "distributors": [],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "CabinetCaligari1920"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Dracula_(1931_film)",
+    "thumbnail": null,
+    "wikiPage": null,
+    "abstract": null,
+    "budget": null,
+    "gross": null,
+    "runtime": null,
+    "country": null,
+    "language": null,
+    "directors": [],
+    "actors": [],
+    "writers": [],
+    "genres": [],
+    "producers": [],
+    "productionCompanies": [],
+    "distributors": [],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "Dracula1931"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Drag_Me_to_Hell",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Dragmetohell.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/Drag_Me_to_Hell",
+    "abstract": null,
+    "budget": 30000000,
+    "gross": 90800000,
+    "runtime": 99,
+    "country": null,
+    "language": null,
+    "directors": [
+      "Sam Raimi"
+    ],
+    "actors": [
+      "Justin Long",
+      "David Paymer",
+      "Alison Lohman",
+      "Adriana Barraza",
+      "Dileep Rao",
+      "Lorna Raver"
+    ],
+    "writers": [
+      "Ivan Raimi",
+      "Sam Raimi"
+    ],
+    "genres": [],
+    "producers": [
+      "Grant Curtis",
+      "Rob Tapert"
+    ],
+    "productionCompanies": [
+      "Ghost House Pictures"
+    ],
+    "distributors": [
+      "Universal Pictures",
+      "Mandate Pictures"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "Drag2009"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Frankenstein_(1931_film)",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Frankenstein_poster_1931.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/Frankenstein_(1931_film)",
+    "abstract": null,
+    "budget": 262007,
+    "gross": 12000000,
+    "runtime": 70,
+    "country": null,
+    "language": null,
+    "directors": [
+      "James Whale"
+    ],
+    "actors": [
+      "Colin Clive",
+      "Frederick Kerr",
+      "Boris Karloff",
+      "John Boles (actor)",
+      "Edward Van Sloan",
+      "Dwight Frye",
+      "Mae Clarke"
+    ],
+    "writers": [
+      "Francis E. Faragoh",
+      "Garrett Fort",
+      "John L. Balderston"
+    ],
+    "genres": [],
+    "producers": [
+      "Carl Laemmle Jr."
+    ],
+    "productionCompanies": [
+      "Universal Pictures"
+    ],
+    "distributors": [
+      "Universal Pictures"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "Frankenstein1931"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Get_Out",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Get_Out_poster.png?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/Get_Out",
+    "abstract": null,
+    "budget": 4500000,
+    "gross": 255400000,
+    "runtime": 104,
+    "country": null,
+    "language": null,
+    "directors": [
+      "Jordan Peele"
+    ],
+    "actors": [
+      "Bradley Whitford",
+      "Daniel Kaluuya",
+      "Allison Williams",
+      "Catherine Keener",
+      "Stephen Root",
+      "Caleb Landry Jones"
+    ],
+    "writers": [
+      "Jordan Peele"
+    ],
+    "genres": [],
+    "producers": [
+      "Edward H. Hamm Jr.",
+      "Jordan Peele",
+      "Jason Blum",
+      "Sean McKittrick"
+    ],
+    "productionCompanies": [
+      "Blumhouse Productions",
+      "Monkeypaw Productions"
+    ],
+    "distributors": [
+      "Universal Pictures"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "GetOut2017"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Halloween_(1978_film)",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Halloween_(1978)_theatrical_poster.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/Halloween_(1978_film)",
+    "abstract": null,
+    "budget": 300000,
+    "gross": 70000000,
+    "runtime": 92,
+    "country": null,
+    "language": null,
+    "directors": [
+      "John Carpenter"
+    ],
+    "actors": [
+      "Nancy Kyes",
+      "P. J. Soles",
+      "Donald Pleasence",
+      "Jamie Lee Curtis"
+    ],
+    "writers": [
+      "John Carpenter",
+      "Debra Hill"
+    ],
+    "genres": [],
+    "producers": [
+      "Debra Hill"
+    ],
+    "productionCompanies": [],
+    "distributors": [
+      "Compass International Pictures"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "Halloween1978"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Hellraiser",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Hellraiser-UK-Quad-poster.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/Hellraiser",
+    "abstract": null,
+    "budget": 1000000,
+    "gross": 30000000,
+    "runtime": 93,
+    "country": null,
+    "language": null,
+    "directors": [
+      "Clive Barker"
+    ],
+    "actors": [
+      "Andrew Robinson (actor)",
+      "Clare Higgins",
+      "Ashley Laurence"
+    ],
+    "writers": [
+      "Clive Barker"
+    ],
+    "genres": [],
+    "producers": [
+      "Christopher Figg"
+    ],
+    "productionCompanies": [],
+    "distributors": [
+      "Entertainment Film Distributors"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "Hellraiser1987"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Hereditary_(film)",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Hereditary.png?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/Hereditary_(film)",
+    "abstract": null,
+    "budget": 10000000,
+    "gross": 90200000,
+    "runtime": 127,
+    "country": null,
+    "language": null,
+    "directors": [
+      "Ari Aster"
+    ],
+    "actors": [
+      "Milly Shapiro",
+      "Toni Collette",
+      "Gabriel Byrne",
+      "Alex Wolff",
+      "Ann Dowd"
+    ],
+    "writers": [
+      "Ari Aster"
+    ],
+    "genres": [],
+    "producers": [
+      "Lars Knudsen (producer)"
+    ],
+    "productionCompanies": [
+      "A24",
+      "PalmStar Media"
+    ],
+    "distributors": [
+      "A24"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "Hereditary2018"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Host_(2020_film)",
+    "thumbnail": null,
+    "wikiPage": null,
+    "abstract": null,
+    "budget": null,
+    "gross": null,
+    "runtime": null,
+    "country": null,
+    "language": null,
+    "directors": [],
+    "actors": [],
+    "writers": [],
+    "genres": [],
+    "producers": [],
+    "productionCompanies": [],
+    "distributors": [],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "HostFoundFootage2020"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Oculus_(film)",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Oculus_(2013_film)_poster.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/Oculus_(film)",
+    "abstract": null,
+    "budget": 5000000,
+    "gross": 44000000,
+    "runtime": 103,
+    "country": null,
+    "language": null,
+    "directors": [
+      "Mike Flanagan (filmmaker)"
+    ],
+    "actors": [
+      "Katee Sackhoff",
+      "Brenton Thwaites",
+      "Karen Gillan",
+      "Annalise Basso",
+      "Rory Cochrane"
+    ],
+    "writers": [
+      "Mike Flanagan (filmmaker)"
+    ],
+    "genres": [],
+    "producers": [],
+    "productionCompanies": [
+      "WWE Studios",
+      "Blumhouse Productions",
+      "Intrepid Pictures"
+    ],
+    "distributors": [
+      "Relativity Media"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "HotelInferno2013"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/House_of_Wax_(1953_film)",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/House_of_Wax_(1953_film_poster).jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/House_of_Wax_(1953_film)",
+    "abstract": null,
+    "budget": 1000000,
+    "gross": 23750000,
+    "runtime": 88,
+    "country": null,
+    "language": null,
+    "directors": [
+      "Andre de Toth"
+    ],
+    "actors": [
+      "Vincent Price",
+      "Phyllis Kirk",
+      "Frank Lovejoy",
+      "Paul Picerni",
+      "Carolyn Jones"
+    ],
+    "writers": [
+      "Crane Wilbur"
+    ],
+    "genres": [],
+    "producers": [
+      "Bryan Foy"
+    ],
+    "productionCompanies": [],
+    "distributors": [
+      "Warner Bros."
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "HouseOfWax1953"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Insidious_(film)",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/insidious_poster.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/Insidious_(film)",
+    "abstract": null,
+    "budget": 1500000,
+    "gross": 100100000,
+    "runtime": 101,
+    "country": null,
+    "language": null,
+    "directors": [
+      "James Wan"
+    ],
+    "actors": [
+      "Barbara Hershey",
+      "Patrick Wilson",
+      "Rose Byrne"
+    ],
+    "writers": [
+      "Leigh Whannell"
+    ],
+    "genres": [],
+    "producers": [
+      "Oren Peli",
+      "Jason Blum",
+      "Steven Schneider"
+    ],
+    "productionCompanies": [
+      "Stage 6 Films",
+      "Alliance Films",
+      "IM Global",
+      "Blumhouse Productions"
+    ],
+    "distributors": [
+      "FilmDistrict",
+      "Momentum Pictures"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "Insidious2010"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/It_Follows",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/It_Follows_(poster).jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/It_Follows",
+    "abstract": null,
+    "budget": 1300000,
+    "gross": 23300000,
+    "runtime": 100,
+    "country": null,
+    "language": null,
+    "directors": [
+      "David Robert Mitchell"
+    ],
+    "actors": [
+      "Daniel Zovatto",
+      "Maika Monroe",
+      "Olivia Luccardi",
+      "Jake Weary",
+      "Keir Gilchrist"
+    ],
+    "writers": [
+      "David Robert Mitchell"
+    ],
+    "genres": [],
+    "producers": [
+      "David Robert Mitchell"
+    ],
+    "productionCompanies": [],
+    "distributors": [
+      "The Weinstein Company"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "ItFollows2014"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Longlegs_(film)",
+    "thumbnail": null,
+    "wikiPage": null,
+    "abstract": null,
+    "budget": null,
+    "gross": null,
+    "runtime": null,
+    "country": null,
+    "language": null,
+    "directors": [],
+    "actors": [],
+    "writers": [],
+    "genres": [],
+    "producers": [],
+    "productionCompanies": [],
+    "distributors": [],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "Longlegs2024"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/M3GAN",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/M3GAN_Poster.jpeg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/M3GAN",
+    "abstract": null,
+    "budget": 12000000,
+    "gross": 181800000,
+    "runtime": 102,
+    "country": null,
+    "language": null,
+    "directors": [
+      "Gerard Johnstone"
+    ],
+    "actors": [
+      "Ronny Chieng",
+      "Jenna Davis",
+      "Violet McGraw",
+      "Allison Williams",
+      "Amie Donald"
+    ],
+    "writers": [
+      "Akela Cooper",
+      "James Wan"
+    ],
+    "genres": [],
+    "producers": [
+      "James Wan",
+      "Jason Blum"
+    ],
+    "productionCompanies": [],
+    "distributors": [
+      "Universal Pictures"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "M3GAN2023"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Mandy_(film)",
+    "thumbnail": null,
+    "wikiPage": null,
+    "abstract": null,
+    "budget": null,
+    "gross": null,
+    "runtime": null,
+    "country": null,
+    "language": null,
+    "directors": [],
+    "actors": [],
+    "writers": [],
+    "genres": [],
+    "producers": [],
+    "productionCompanies": [],
+    "distributors": [],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "Mandy2018"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Men_(film)",
+    "thumbnail": null,
+    "wikiPage": null,
+    "abstract": null,
+    "budget": null,
+    "gross": null,
+    "runtime": null,
+    "country": null,
+    "language": null,
+    "directors": [],
+    "actors": [],
+    "writers": [],
+    "genres": [],
+    "producers": [],
+    "productionCompanies": [],
+    "distributors": [],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "MenA242022"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Midsommar",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Midsommar_(2019_film_poster).png?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/Midsommar",
+    "abstract": null,
+    "budget": 9000000,
+    "gross": 48500000,
+    "runtime": 141,
+    "country": null,
+    "language": null,
+    "directors": [
+      "Ari Aster"
+    ],
+    "actors": [
+      "Jack Reynor",
+      "Florence Pugh",
+      "Ellora Torchia",
+      "William Jackson Harper",
+      "Will Poulter",
+      "Archie Madekwe"
+    ],
+    "writers": [
+      "Ari Aster"
+    ],
+    "genres": [],
+    "producers": [
+      "Lars Knudsen (producer)",
+      "Patrik Andersson (producer)"
+    ],
+    "productionCompanies": [
+      "A24",
+      "B-Reel Films"
+    ],
+    "distributors": [
+      "Nordisk Film"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "Midsommar2019"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Apostle_(film)",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Apostle_poster.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/Apostle_(film)",
+    "abstract": null,
+    "budget": null,
+    "gross": null,
+    "runtime": 129,
+    "country": null,
+    "language": null,
+    "directors": [
+      "Gareth Evans (filmmaker)"
+    ],
+    "actors": [
+      "Paul Higgins (actor)",
+      "Michael Sheen",
+      "Dan Stevens",
+      "Lucy Boynton",
+      "Kristine Froseth",
+      "Bill Milner",
+      "Mark Lewis Jones"
+    ],
+    "writers": [
+      "Gareth Evans (filmmaker)"
+    ],
+    "genres": [],
+    "producers": [
+      "Gareth Evans (filmmaker)"
+    ],
+    "productionCompanies": [],
+    "distributors": [
+      "Netflix"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "MidsommarRitual"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Night_of_the_Living_Dead",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Night_of_the_Living_Dead_(1968)_poster.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/Night_of_the_Living_Dead",
+    "abstract": null,
+    "budget": 114000,
+    "gross": null,
+    "runtime": 96,
+    "country": null,
+    "language": null,
+    "directors": [
+      "George A. Romero"
+    ],
+    "actors": [
+      "Judith O'Dea",
+      "Duane Jones",
+      "Marilyn Eastman",
+      "Russell Streiner"
+    ],
+    "writers": [
+      "George A. Romero",
+      "John A. Russo"
+    ],
+    "genres": [],
+    "producers": [
+      "Russell Streiner"
+    ],
+    "productionCompanies": [],
+    "distributors": [
+      "Walter Reade"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "NightLivingDead1968"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/A_Nightmare_on_Elm_Street",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/A_Nightmare_on_Elm_Street_(1984)_theatrical_poster.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/A_Nightmare_on_Elm_Street",
+    "abstract": null,
+    "budget": 1100000,
+    "gross": 57100000,
+    "runtime": 91,
+    "country": null,
+    "language": null,
+    "directors": [
+      "Wes Craven"
+    ],
+    "actors": [
+      "Heather Langenkamp",
+      "Jsu Garcia",
+      "Johnny Depp",
+      "Ronee Blakley",
+      "Robert Englund",
+      "John Saxon",
+      "Amanda Wyss"
+    ],
+    "writers": [
+      "Wes Craven"
+    ],
+    "genres": [],
+    "producers": [
+      "Robert Shaye"
+    ],
+    "productionCompanies": [],
+    "distributors": [
+      "New Line Cinema"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "NightmareElmStreet1984"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Nosferatu",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Nosferatu_poster_(Albin_Grau,_1922)_1.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/Nosferatu",
+    "abstract": null,
+    "budget": null,
+    "gross": null,
+    "runtime": -5640,
+    "country": "http://dbpedia.org/resource/Weimar_Republic",
+    "language": "http://dbpedia.org/resource/German_Confederation",
+    "directors": [
+      "F. W. Murnau"
+    ],
+    "actors": [
+      "Gustav von Wangenheim",
+      "Greta Schröder",
+      "Max Schreck",
+      "Alexander Granach"
+    ],
+    "writers": [
+      "Henrik Galeen"
+    ],
+    "genres": [],
+    "producers": [],
+    "productionCompanies": [],
+    "distributors": [],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "Nosferatu1922"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Nosferatu_(2024_film)",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Nosferatu_IMAX_poster_2024.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/Nosferatu_(2024_film)",
+    "abstract": null,
+    "budget": 50000000,
+    "gross": 181300000,
+    "runtime": 132,
+    "country": null,
+    "language": null,
+    "directors": [
+      "Robert Eggers"
+    ],
+    "actors": [
+      "Bill Skarsgård",
+      "Willem Dafoe",
+      "Lily-Rose Depp",
+      "Aaron Taylor-Johnson",
+      "Emma Corrin",
+      "Nicholas Hoult"
+    ],
+    "writers": [
+      "Robert Eggers"
+    ],
+    "genres": [],
+    "producers": [
+      "Chris Columbus (filmmaker)",
+      "Robert Eggers"
+    ],
+    "productionCompanies": [],
+    "distributors": [
+      "Focus Features",
+      "Universal Pictures"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "NosferatuRemake2024"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Paranormal_Activity",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Paranormal_Activity_poster.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/Paranormal_Activity",
+    "abstract": null,
+    "budget": 200000,
+    "gross": 194200000,
+    "runtime": 86,
+    "country": null,
+    "language": null,
+    "directors": [
+      "Oren Peli"
+    ],
+    "actors": [
+      "Katie Featherston",
+      "Micah Sloat"
+    ],
+    "writers": [
+      "Oren Peli"
+    ],
+    "genres": [],
+    "producers": [
+      "Jason Blum",
+      "Oren Peli",
+      "Steven Schneider"
+    ],
+    "productionCompanies": [
+      "Blumhouse Productions"
+    ],
+    "distributors": [
+      "Paramount Pictures",
+      "IM Global"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "ParanormalActivity2007"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Pearl_(2022_film)",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Pearl_theatricalposter.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/Pearl_(2022_film)",
+    "abstract": null,
+    "budget": 4800000,
+    "gross": 10100000,
+    "runtime": 102,
+    "country": null,
+    "language": null,
+    "directors": [
+      "Ti West"
+    ],
+    "actors": [
+      "Tandi Wright",
+      "David Corenswet",
+      "Mia Goth",
+      "Matthew Sunderland"
+    ],
+    "writers": [
+      "Mia Goth",
+      "Ti West"
+    ],
+    "genres": [],
+    "producers": [
+      "Kevin Turen",
+      "Ti West"
+    ],
+    "productionCompanies": [
+      "Kid Cudi",
+      "Sam Levinson",
+      "A24"
+    ],
+    "distributors": [
+      "Universal Pictures"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "PearlX2022"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Psycho_(1960_film)",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Psycho_(1960)_theatrical_poster_(retouched).jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/Psycho_(1960_film)",
+    "abstract": null,
+    "budget": 806947,
+    "gross": 50000000,
+    "runtime": 109,
+    "country": null,
+    "language": null,
+    "directors": [
+      "Alfred Hitchcock"
+    ],
+    "actors": [
+      "John Gavin",
+      "Martin Balsam",
+      "Vera Miles",
+      "Anthony Perkins",
+      "John McIntire",
+      "Janet Leigh"
+    ],
+    "writers": [
+      "Joseph Stefano"
+    ],
+    "genres": [],
+    "producers": [
+      "Alfred Hitchcock"
+    ],
+    "productionCompanies": [],
+    "distributors": [
+      "Paramount Pictures"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "Psycho1960"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/%5BRec%5D",
+    "thumbnail": null,
+    "wikiPage": null,
+    "abstract": null,
+    "budget": null,
+    "gross": null,
+    "runtime": null,
+    "country": null,
+    "language": null,
+    "directors": [],
+    "actors": [],
+    "writers": [],
+    "genres": [],
+    "producers": [],
+    "productionCompanies": [],
+    "distributors": [],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "REC2007"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Ring_(1998_film)",
+    "thumbnail": null,
+    "wikiPage": null,
+    "abstract": null,
+    "budget": null,
+    "gross": null,
+    "runtime": null,
+    "country": null,
+    "language": null,
+    "directors": [],
+    "actors": [],
+    "writers": [],
+    "genres": [],
+    "producers": [],
+    "productionCompanies": [],
+    "distributors": [],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "Ringu1998"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Rosemary%27s_Baby_(film)",
+    "thumbnail": null,
+    "wikiPage": null,
+    "abstract": null,
+    "budget": null,
+    "gross": null,
+    "runtime": null,
+    "country": null,
+    "language": null,
+    "directors": [],
+    "actors": [],
+    "writers": [],
+    "genres": [],
+    "producers": [],
+    "productionCompanies": [],
+    "distributors": [],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "RosemarysBaby1968"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Saw_(film)",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Saw_official_poster.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/Saw_(film)",
+    "abstract": null,
+    "budget": 11200000,
+    "gross": 104000000,
+    "runtime": 103,
+    "country": null,
+    "language": null,
+    "directors": [
+      "James Wan"
+    ],
+    "actors": [
+      "Leigh Whannell",
+      "Ken Leung",
+      "Michael Emerson",
+      "Danny Glover",
+      "Cary Elwes",
+      "Monica Potter",
+      "Tobin Bell"
+    ],
+    "writers": [
+      "Leigh Whannell",
+      "James Wan"
+    ],
+    "genres": [],
+    "producers": [
+      "Oren Koules",
+      "Gregg Hoffman",
+      "Mark Burg"
+    ],
+    "productionCompanies": [
+      "Twisted Pictures"
+    ],
+    "distributors": [
+      "Cinepix",
+      "Lionsgate Films"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "Saw2004"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Scream_(1996_film)",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Scream_(1996_film)_poster.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/Scream_(1996_film)",
+    "abstract": null,
+    "budget": 14,
+    "gross": 173000000,
+    "runtime": 111,
+    "country": null,
+    "language": null,
+    "directors": [
+      "Wes Craven"
+    ],
+    "actors": [
+      "Courteney Cox",
+      "David Arquette",
+      "Drew Barrymore",
+      "Matthew Lillard",
+      "Neve Campbell",
+      "Rose McGowan",
+      "Skeet Ulrich"
+    ],
+    "writers": [
+      "Kevin Williamson (screenwriter)"
+    ],
+    "genres": [],
+    "producers": [
+      "Cary Woods",
+      "Cathy Konrad"
+    ],
+    "productionCompanies": [],
+    "distributors": [
+      "Dimension Films"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "Scream1996"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/The_Silence_of_the_Lambs_(film)",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/The_Silence_of_the_Lambs_poster.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/The_Silence_of_the_Lambs_(film)",
+    "abstract": null,
+    "budget": 19000000,
+    "gross": 272700000,
+    "runtime": 118,
+    "country": null,
+    "language": null,
+    "directors": [
+      "Jonathan Demme"
+    ],
+    "actors": [
+      "Jodie Foster",
+      "Ted Levine",
+      "Scott Glenn",
+      "Anthony Hopkins"
+    ],
+    "writers": [
+      "Ted Tally"
+    ],
+    "genres": [],
+    "producers": [
+      "Kenneth Utt",
+      "Edward Saxon",
+      "Ron Bozman"
+    ],
+    "productionCompanies": [],
+    "distributors": [
+      "Orion Pictures"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "SilenceLambs1991"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Smile_(2022_film)",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Smile_(2022_film).jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/Smile_(2022_film)",
+    "abstract": null,
+    "budget": 17000000,
+    "gross": 217400000,
+    "runtime": 115,
+    "country": null,
+    "language": null,
+    "directors": [
+      "Parker Finn"
+    ],
+    "actors": [
+      "Kyle Gallner",
+      "Kal Penn",
+      "Sosie Bacon",
+      "Jessie T. Usher",
+      "Rob Morgan (actor)"
+    ],
+    "writers": [
+      "Parker Finn"
+    ],
+    "genres": [],
+    "producers": [
+      "Wyck Godfrey"
+    ],
+    "productionCompanies": [
+      "Paramount Players",
+      "Temple Hill Entertainment"
+    ],
+    "distributors": [
+      "Paramount Pictures"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "Smile2022"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Suspiria",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/SuspiriaItaly.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/Suspiria",
+    "abstract": null,
+    "budget": null,
+    "gross": 1800000,
+    "runtime": 99,
+    "country": null,
+    "language": null,
+    "directors": [
+      "Dario Argento"
+    ],
+    "actors": [
+      "Alida Valli",
+      "Miguel Bosé",
+      "Barbara Magnolfi",
+      "Flavio Bucci",
+      "Jessica Harper",
+      "Joan Bennett",
+      "Stefania Casini",
+      "Susanna Javicoli"
+    ],
+    "writers": [
+      "Dario Argento",
+      "Daria Nicolodi"
+    ],
+    "genres": [],
+    "producers": [
+      "Claudio Argento"
+    ],
+    "productionCompanies": [],
+    "distributors": [],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "SuspiriaDario1977"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Talk_to_Me_(2022_film)",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/TalkToMe2022poster.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/Talk_to_Me_(2022_film)",
+    "abstract": null,
+    "budget": 4500000,
+    "gross": 92000000,
+    "runtime": 95,
+    "country": null,
+    "language": null,
+    "directors": [
+      "RackaRacka"
+    ],
+    "actors": [
+      "Zoe Terakes",
+      "Miranda Otto",
+      "Alexandra Jensen",
+      "Sophie Wilde"
+    ],
+    "writers": [],
+    "genres": [],
+    "producers": [],
+    "productionCompanies": [
+      "South Australian Film Corporation",
+      "Screen Australia",
+      "Adelaide Film Festival Investment Fund"
+    ],
+    "distributors": [
+      "Umbrella Entertainment"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "TalkToMe2022"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Terrifier_2",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Terrifier_2_Poster.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/Terrifier_2",
+    "abstract": null,
+    "budget": 250000,
+    "gross": 15800000,
+    "runtime": 138,
+    "country": null,
+    "language": null,
+    "directors": [
+      "Damien Leone"
+    ],
+    "actors": [
+      "David Howard Thornton",
+      "Lauren LaVera"
+    ],
+    "writers": [
+      "Damien Leone"
+    ],
+    "genres": [],
+    "producers": [],
+    "productionCompanies": [
+      "Bloody Disgusting",
+      "Cineverse"
+    ],
+    "distributors": [
+      "Iconic Events",
+      "Cineverse"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "Terrifier2022"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/The_Conjuring",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/The_Conjuring_poster.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/The_Conjuring",
+    "abstract": null,
+    "budget": 20000000,
+    "gross": 319500000,
+    "runtime": 112,
+    "country": null,
+    "language": null,
+    "directors": [
+      "James Wan"
+    ],
+    "actors": [
+      "Ron Livingston",
+      "Vera Farmiga",
+      "Lili Taylor",
+      "Patrick Wilson"
+    ],
+    "writers": [
+      "Chad Hayes (writer)",
+      "Carey W. Hayes"
+    ],
+    "genres": [],
+    "producers": [
+      "Peter Safran",
+      "Rob Cowan"
+    ],
+    "productionCompanies": [],
+    "distributors": [
+      "Warner Bros. Pictures"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "TheConjuring2013"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/The_Descent",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Descentposter.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/The_Descent",
+    "abstract": null,
+    "budget": 3500000,
+    "gross": 57100000,
+    "runtime": 100,
+    "country": null,
+    "language": null,
+    "directors": [
+      "Neil Marshall"
+    ],
+    "actors": [
+      "Alex Reid (actress)",
+      "Shauna Macdonald (Scottish actress)",
+      "Natalie Mendoza",
+      "MyAnna Buring",
+      "Saskia Mulder",
+      "Nora-Jane Noone"
+    ],
+    "writers": [
+      "Neil Marshall"
+    ],
+    "genres": [],
+    "producers": [
+      "Christian Colson"
+    ],
+    "productionCompanies": [
+      "Celador"
+    ],
+    "distributors": [
+      "Pathé"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "TheDescent2005"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/The_Exorcist",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Exorcist_ver2.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/The_Exorcist",
+    "abstract": null,
+    "budget": 12000000,
+    "gross": 441300000,
+    "runtime": 122,
+    "country": null,
+    "language": null,
+    "directors": [
+      "William Friedkin"
+    ],
+    "actors": [
+      "Linda Blair",
+      "Lee J. Cobb",
+      "Max von Sydow",
+      "Ellen Burstyn",
+      "Jack MacGowran",
+      "Kitty Winn",
+      "Jason Miller (playwright)"
+    ],
+    "writers": [
+      "William Peter Blatty"
+    ],
+    "genres": [],
+    "producers": [
+      "William Peter Blatty"
+    ],
+    "productionCompanies": [],
+    "distributors": [
+      "Warner Bros. Pictures"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "TheExorcist1973"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/The_First_Omen",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/The_First_Omen_poster.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/The_First_Omen",
+    "abstract": null,
+    "budget": 30000000,
+    "gross": 54000000,
+    "runtime": 119,
+    "country": null,
+    "language": null,
+    "directors": [
+      "Arkasha Stevenson"
+    ],
+    "actors": [
+      "Ralph Ineson",
+      "Bill Nighy",
+      "Sônia Braga",
+      "Tawfeek Barhom",
+      "Nell Tiger Free"
+    ],
+    "writers": [
+      "Arkasha Stevenson",
+      "Keith Thomas (director)"
+    ],
+    "genres": [],
+    "producers": [
+      "David S. Goyer"
+    ],
+    "productionCompanies": [],
+    "distributors": [
+      "20th Century Studios"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "TheFirstOmen2024"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/The_Fly_(1986_film)",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Fly_poster.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/The_Fly_(1986_film)",
+    "abstract": null,
+    "budget": 9,
+    "gross": 60600000,
+    "runtime": 96,
+    "country": null,
+    "language": null,
+    "directors": [
+      "David Cronenberg"
+    ],
+    "actors": [
+      "Geena Davis",
+      "Jeff Goldblum",
+      "John Getz"
+    ],
+    "writers": [
+      "Charles Edward Pogue",
+      "David Cronenberg"
+    ],
+    "genres": [],
+    "producers": [
+      "Stuart Cornfeld",
+      "Mel Brooks"
+    ],
+    "productionCompanies": [
+      "Mel Brooks"
+    ],
+    "distributors": [
+      "20th Century Studios"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "TheFly1986"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/The_Lost_Boys",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/Lost_boys.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/The_Lost_Boys",
+    "abstract": null,
+    "budget": 8500000,
+    "gross": 32500000,
+    "runtime": 97,
+    "country": null,
+    "language": null,
+    "directors": [
+      "Joel Schumacher"
+    ],
+    "actors": [
+      "Barnard Hughes",
+      "Jason Patric",
+      "Corey Feldman",
+      "Dianne Wiest",
+      "Kiefer Sutherland",
+      "Corey Haim",
+      "Jami Gertz",
+      "Edward Herrmann"
+    ],
+    "writers": [
+      "Jeffrey Boam"
+    ],
+    "genres": [],
+    "producers": [
+      "Harvey Bernhard"
+    ],
+    "productionCompanies": [
+      "Richard Donner"
+    ],
+    "distributors": [
+      "Warner Bros. Pictures"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "TheLostBoys1987"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/The_Ring_(2002_film)",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/theringpostere.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/The_Ring_(2002_film)",
+    "abstract": null,
+    "budget": 48000000,
+    "gross": 249300000,
+    "runtime": 115,
+    "country": null,
+    "language": null,
+    "directors": [
+      "Gore Verbinski"
+    ],
+    "actors": [
+      "Naomi Watts",
+      "Brian Cox (actor)",
+      "Martin Henderson"
+    ],
+    "writers": [
+      "Ehren Kruger"
+    ],
+    "genres": [],
+    "producers": [
+      "Laurie MacDonald",
+      "Walter F. Parkes"
+    ],
+    "productionCompanies": [],
+    "distributors": [
+      "DreamWorks Pictures"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "TheRing2002"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/The_Shining_(film)",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/The_Shining_(1980)_U.K._release_poster_-_The_tide_of_terror_that_swept_America_IS_HERE.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/The_Shining_(film)",
+    "abstract": null,
+    "budget": 19000000,
+    "gross": 48000000,
+    "runtime": 119,
+    "country": null,
+    "language": null,
+    "directors": [
+      "Stanley Kubrick"
+    ],
+    "actors": [
+      "Scatman Crothers",
+      "Danny Lloyd",
+      "Shelley Duvall",
+      "Jack Nicholson"
+    ],
+    "writers": [
+      "Diane Johnson",
+      "Stanley Kubrick"
+    ],
+    "genres": [],
+    "producers": [
+      "Stanley Kubrick"
+    ],
+    "productionCompanies": [
+      "Hawk Films"
+    ],
+    "distributors": [
+      "Columbia Pictures",
+      "Warner Bros. Pictures"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "TheShining1980"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/The_Strangers_(film)",
+    "thumbnail": null,
+    "wikiPage": null,
+    "abstract": null,
+    "budget": null,
+    "gross": null,
+    "runtime": null,
+    "country": null,
+    "language": null,
+    "directors": [],
+    "actors": [],
+    "writers": [],
+    "genres": [],
+    "producers": [],
+    "productionCompanies": [],
+    "distributors": [],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "TheStrangers2008"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/The_Substance",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/The_Substance_poster.jpg?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/The_Substance",
+    "abstract": null,
+    "budget": 18000000,
+    "gross": 77,
+    "runtime": 141,
+    "country": "http://dbpedia.org/resource/France",
+    "language": null,
+    "directors": [],
+    "actors": [],
+    "writers": [],
+    "genres": [],
+    "producers": [
+      "Eric Fellner",
+      "Coralie Fargeat",
+      "Tim Bevan"
+    ],
+    "productionCompanies": [
+      "Working Title Films"
+    ],
+    "distributors": [
+      "Mubi (streaming service)"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "TheSubstance2024"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/The_Thing_(1982_film)",
+    "thumbnail": "http://commons.wikimedia.org/wiki/Special:FilePath/The_Thing_(1982_film).png?width=300",
+    "wikiPage": "http://en.wikipedia.org/wiki/The_Thing_(1982_film)",
+    "abstract": null,
+    "budget": 15000000,
+    "gross": 19600000,
+    "runtime": 109,
+    "country": null,
+    "language": null,
+    "directors": [
+      "John Carpenter"
+    ],
+    "actors": [
+      "Kurt Russell"
+    ],
+    "writers": [
+      "Bill Lancaster"
+    ],
+    "genres": [],
+    "producers": [],
+    "productionCompanies": [],
+    "distributors": [
+      "Universal Pictures"
+    ],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "TheThing1982"
+  },
+  {
+    "dbpediaUri": "http://dbpedia.org/resource/Us_(film)",
+    "thumbnail": null,
+    "wikiPage": null,
+    "abstract": null,
+    "budget": null,
+    "gross": null,
+    "runtime": null,
+    "country": null,
+    "language": null,
+    "directors": [],
+    "actors": [],
+    "writers": [],
+    "genres": [],
+    "producers": [],
+    "productionCompanies": [],
+    "distributors": [],
+    "musicComposers": [],
+    "source": "online",
+    "localId": "UsJordanPeele2019"
+  }
+]
