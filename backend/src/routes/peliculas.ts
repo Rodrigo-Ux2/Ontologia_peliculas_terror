@@ -2,6 +2,7 @@ import { Router, Request, Response } from "express";
 import { sparqlSelect } from "../sparql/client.js";
 import { buildBusquedaPeliculas, buildDetallePelicula } from "../sparql/queries.js";
 import { fetchDbpediaData } from "../sparql/dbpedia.js";
+import { translateField } from "../sparql/translations.js";
 
 export const peliculasRouter = Router();
 
@@ -86,6 +87,46 @@ peliculasRouter.get("/peliculas/:id", async (req: Request, res: Response) => {
   } catch (err) {
     const message = err instanceof Error ? err.message : "Error desconocido";
     res.status(400).json({ error: message });
+  }
+});
+
+peliculasRouter.get("/peliculas/:id/translations", async (req: Request, res: Response) => {
+  try {
+    const id = String(req.params.id);
+    const lang = (req.query.lang as string) || "en";
+    if (!["en", "pt"].includes(lang)) {
+      res.json({});
+      return;
+    }
+
+    const query = buildDetallePelicula(id);
+    const rows = await sparqlSelect(query);
+    if (!rows.length) {
+      res.json({});
+      return;
+    }
+
+    type Row = Record<string, { value: string } | undefined>;
+    const r = rows[0] as Row;
+
+    const result: Record<string, string | null> = {};
+    const fields = [
+      { field: "sinopsis", key: "sinopsis", rowKey: "sinopsis" },
+      { field: "ambientacion", key: "ambientacion", rowKey: "ambientacion" },
+      { field: "estilo", key: "estiloFotografia", rowKey: "estilo" },
+    ];
+
+    for (const f of fields) {
+      const original = r[f.rowKey]?.value;
+      if (original) {
+        result[f.key] = await translateField(f.field, original, lang);
+      }
+    }
+
+    res.json(result);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Error desconocido";
+    res.status(500).json({ error: message });
   }
 });
 

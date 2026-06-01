@@ -47,6 +47,17 @@ export const movieService = {
     }
   },
 
+  async getTranslations(id: string, lang: string): Promise<Record<string, string | null>> {
+    try {
+      const response = await api.get<Record<string, string | null>>(`/peliculas/${id}/translations`, {
+        params: { lang },
+      });
+      return response.data;
+    } catch {
+      return {};
+    }
+  },
+
   async sparqlQuery(query: string): Promise<any> {
     const response = await api.post('/sparql', { query });
     return response.data;

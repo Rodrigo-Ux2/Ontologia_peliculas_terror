@@ -1,5 +1,7 @@
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MovieDetail, DbpediaData } from '../types';
+import { movieService } from '../services/api';
 import { Icon } from './Icon';
 
 interface MovieDetailViewProps {
@@ -7,29 +9,6 @@ interface MovieDetailViewProps {
   loading: boolean;
   dbpediaData?: DbpediaData | null;
   onClose: () => void;
-}
-
-// Diccionarios de traduccion para valores OWL que no tienen equivalente en DBpedia
-const OWL_TRANSLATIONS: Record<string, Record<string, Record<string, string>>> = {
-  clasificacion: {
-    es: { 'Mayores de 13': 'Mayores de 13', 'Mayores de 16': 'Mayores de 16', 'Mayores de 18': 'Mayores de 18', 'No apta menores': 'No apta menores', 'Todos los públicos': 'Todos los públicos' },
-    en: { 'Mayores de 13': '13+', 'Mayores de 16': '16+', 'Mayores de 18': '18+', 'No apta menores': 'Not suitable for minors', 'Todos los públicos': 'All ages' },
-    pt: { 'Mayores de 13': 'Maiores de 13', 'Mayores de 16': 'Maiores de 16', 'Mayores de 18': 'Maiores de 18', 'No apta menores': 'Não recomendado para menores', 'Todos los públicos': 'Livre para todos os públicos' },
-  },
-  subgeneros: {
-    es: { 'Slasher': 'Slasher', 'Sobrenatural': 'Sobrenatural', 'TerrorPsicologico': 'Terror Psicológico', 'BodyHorror': 'Body Horror', 'FoundFootage': 'Falso Documental', 'TerrorHistorico': 'Terror Histórico', 'TerrorSupervivencia': 'Terror de Supervivencia', 'ComediaTerror': 'Comedia de Terror' },
-    en: { 'Slasher': 'Slasher', 'Sobrenatural': 'Supernatural', 'TerrorPsicologico': 'Psychological', 'BodyHorror': 'Body Horror', 'FoundFootage': 'Found Footage', 'TerrorHistorico': 'Historical Horror', 'TerrorSupervivencia': 'Survival Horror', 'ComediaTerror': 'Horror Comedy' },
-    pt: { 'Slasher': 'Slasher', 'Sobrenatural': 'Sobrenatural', 'TerrorPsicologico': 'Terror Psicológico', 'BodyHorror': 'Body Horror', 'FoundFootage': 'Falso Documentário', 'TerrorHistorico': 'Terror Histórico', 'TerrorSupervivencia': 'Terror de Sobrevivência', 'ComediaTerror': 'Comédia de Terror' },
-  },
-  monstruos: {
-    es: { 'Fantasma': 'Fantasma', 'Vampiro': 'Vampiro', 'Zombi': 'Zombi', 'Demonio': 'Demonio', 'HombreLobo': 'Hombre Lobo', 'Extraterrestre': 'Extraterrestre', 'AsesinoSerial': 'Asesino Serial', 'Monstruo_Fisico': 'Monstruo Físico' },
-    en: { 'Fantasma': 'Ghost', 'Vampiro': 'Vampire', 'Zombi': 'Zombie', 'Demonio': 'Demon', 'HombreLobo': 'Werewolf', 'Extraterrestre': 'Alien', 'AsesinoSerial': 'Serial Killer', 'Monstruo_Fisico': 'Monster' },
-    pt: { 'Fantasma': 'Fantasma', 'Vampiro': 'Vampiro', 'Zombi': 'Zumbi', 'Demonio': 'Demônio', 'HombreLobo': 'Lobisomem', 'Extraterrestre': 'Extraterrestre', 'AsesinoSerial': 'Assassino Serial', 'Monstruo_Fisico': 'Monstro' },
-  },
-};
-
-function translateOWL(dictName: string, value: string, lang: string): string {
-  return OWL_TRANSLATIONS[dictName]?.[lang]?.[value] ?? value;
 }
 
 function SourceBadge({ source }: { source: 'owl' | 'dbpedia' }) {
@@ -47,6 +26,18 @@ function SourceBadge({ source }: { source: 'owl' | 'dbpedia' }) {
 export function MovieDetailView({ movie, loading, dbpediaData, onClose }: MovieDetailViewProps) {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
+  const [translations, setTranslations] = useState<Record<string, string | null>>({});
+
+  useEffect(() => {
+    if (movie?.id && lang !== 'es') {
+      movieService.getTranslations(movie.id, lang).then(setTranslations).catch(() => {});
+    } else {
+      setTranslations({});
+    }
+  }, [movie?.id, lang]);
+
+  const tr = (key: string, original: string): string =>
+    translations[key] ?? original;
 
   // Cuando el idioma no es español, prefiere datos de DBpedia (traducidos)
   const useDbpedia = lang !== 'es' && dbpediaData != null;
@@ -116,11 +107,11 @@ export function MovieDetailView({ movie, loading, dbpediaData, onClose }: MovieD
             </div>
 
             {/* Sinopsis */}
-            {(movie.sinopsis || (useDbpedia && dbpediaData?.abstract)) && (
+            {movie.sinopsis && (
               <div>
-                <h2 className="text-xl font-bold text-slate-100 mb-2">{t('detail.synopsis')}<SourceBadge source={srcBadge(true)} /></h2>
+                <h2 className="text-xl font-bold text-slate-100 mb-2">{t('detail.synopsis')}<SourceBadge source="owl" /></h2>
                 <p className="text-slate-300 leading-relaxed">
-                  {owlOrDbpedia(movie.sinopsis, dbpediaData?.abstract)}
+                  {tr('sinopsis', movie.sinopsis)}
                 </p>
               </div>
             )}
@@ -148,7 +139,7 @@ export function MovieDetailView({ movie, loading, dbpediaData, onClose }: MovieD
               {movie.clasificacion && (
                 <div className="bg-slate-800 rounded p-4">
                   <p className="text-slate-400 text-sm">{t('detail.rating')}<SourceBadge source="owl" /></p>
-                  <p className="text-slate-200">{translateOWL('clasificacion', movie.clasificacion, lang)}</p>
+                  <p className="text-slate-200">{tr('clasificacion', movie.clasificacion)}</p>
                 </div>
               )}
               {(movie.presupuesto || (useDbpedia && dbpediaData?.budget)) && (
@@ -169,15 +160,13 @@ export function MovieDetailView({ movie, loading, dbpediaData, onClose }: MovieD
             {movie.ambientacion && (
               <div>
                 <h3 className="font-bold text-slate-100 mb-2">{t('detail.setting')}<SourceBadge source="owl" /></h3>
-                <p className="text-slate-300">{movie.ambientacion}</p>
-                {lang !== 'es' && <p className="text-xs text-slate-500 mt-1 italic">Solo disponible en español</p>}
+                <p className="text-slate-300">{tr('ambientacion', movie.ambientacion)}</p>
               </div>
             )}
             {movie.estiloFotografia && (
               <div>
                 <h3 className="font-bold text-slate-100 mb-2">{t('detail.photography')}<SourceBadge source="owl" /></h3>
-                <p className="text-slate-300">{movie.estiloFotografia}</p>
-                {lang !== 'es' && <p className="text-xs text-slate-500 mt-1 italic">Solo disponible en español</p>}
+                <p className="text-slate-300">{tr('estilo', movie.estiloFotografia)}</p>
               </div>
             )}
 
@@ -188,7 +177,7 @@ export function MovieDetailView({ movie, loading, dbpediaData, onClose }: MovieD
                 <div className="flex flex-wrap gap-2">
                   {movie.subgeneros.map((sg) => (
                     <span key={sg} className="bg-red-900 text-red-100 px-3 py-1 rounded-full text-sm">
-                      {translateOWL('subgeneros', sg, lang)}
+                      {tr('subgeneros', sg)}
                     </span>
                   ))}
                 </div>
@@ -201,7 +190,7 @@ export function MovieDetailView({ movie, loading, dbpediaData, onClose }: MovieD
                 <div className="flex flex-wrap gap-2">
                   {movie.monstruos.map((m) => (
                     <span key={m} className="bg-purple-900 text-purple-100 px-3 py-1 rounded-full text-sm">
-                      {translateOWL('monstruos', m, lang)}
+                      {tr('monstruos', m)}
                     </span>
                   ))}
                 </div>

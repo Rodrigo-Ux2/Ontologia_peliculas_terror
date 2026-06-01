@@ -7,13 +7,15 @@
     "dev": "tsx src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "download-dbpedia": "tsx src/sparql/download-dbpedia.ts"
+    "download-dbpedia": "tsx src/sparql/download-dbpedia.ts",
+    "translate-owl": "tsx src/sparql/translate-owl.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@iamtraction/google-translate": "^2.0.1",
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "node-fetch": "^3.3.2"
