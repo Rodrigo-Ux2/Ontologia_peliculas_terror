@@ -191,7 +191,7 @@ function split(val: string | undefined): string[] {
 }
 
 // ─── Online: query DBpedia SPARQL endpoint ───
-export async function queryDbpediaOnline(uri: string): Promise<DbpediaResult> {
+export async function queryDbpediaOnline(uri: string, lang: string = "en"): Promise<DbpediaResult> {
   const TIMEOUT = 20000;
 
   function makeQuery(_vars: string, pattern: string): string {
@@ -203,7 +203,7 @@ WHERE {
   BIND(<${uri}> AS ?movie)
   OPTIONAL { ?movie dbo:thumbnail ?thumbnail }
   OPTIONAL { ?movie foaf:isPrimaryTopicOf ?wikiPage }
-  OPTIONAL { ?movie dbo:abstract ?abstract . FILTER(LANG(?abstract) = "en") }
+  OPTIONAL { ?movie dbo:abstract ?abstract . FILTER(LANG(?abstract) = "${lang}") }
   OPTIONAL { ?movie dbo:budget ?budget }
   OPTIONAL { ?movie dbo:gross ?gross }
   OPTIONAL { ?movie dbo:runtime ?runtime }
@@ -216,24 +216,24 @@ WHERE {
 
   const vars1 = "?directorLabel ?actorLabel ?writerLabel";
   const pat1 = `
-  OPTIONAL { ?movie dbo:director ?d . ?d rdfs:label ?directorLabel . FILTER(LANG(?directorLabel) = "en") }
-  OPTIONAL { ?movie dbo:starring ?a . ?a rdfs:label ?actorLabel . FILTER(LANG(?actorLabel) = "en") }
-  OPTIONAL { ?movie dbo:writer ?w . ?w rdfs:label ?writerLabel . FILTER(LANG(?writerLabel) = "en") }
+  OPTIONAL { ?movie dbo:director ?d . ?d rdfs:label ?directorLabel . FILTER(LANG(?directorLabel) = "${lang}") }
+  OPTIONAL { ?movie dbo:starring ?a . ?a rdfs:label ?actorLabel . FILTER(LANG(?actorLabel) = "${lang}") }
+  OPTIONAL { ?movie dbo:writer ?w . ?w rdfs:label ?writerLabel . FILTER(LANG(?writerLabel) = "${lang}") }
 `;
   const query1 = makeQuery(vars1, pat1);
 
   const vars2a = "?genreLabel ?producerLabel ?companyLabel";
   const pat2a = `
-  OPTIONAL { ?movie dbo:genre ?g . ?g rdfs:label ?genreLabel . FILTER(LANG(?genreLabel) = "en") }
-  OPTIONAL { ?movie dbo:producer ?p . ?p rdfs:label ?producerLabel . FILTER(LANG(?producerLabel) = "en") }
-  OPTIONAL { ?movie dbo:productionCompany ?c . ?c rdfs:label ?companyLabel . FILTER(LANG(?companyLabel) = "en") }
+  OPTIONAL { ?movie dbo:genre ?g . ?g rdfs:label ?genreLabel . FILTER(LANG(?genreLabel) = "${lang}") }
+  OPTIONAL { ?movie dbo:producer ?p . ?p rdfs:label ?producerLabel . FILTER(LANG(?producerLabel) = "${lang}") }
+  OPTIONAL { ?movie dbo:productionCompany ?c . ?c rdfs:label ?companyLabel . FILTER(LANG(?companyLabel) = "${lang}") }
 `;
   const query2a = makeQuery(vars2a, pat2a);
 
   const vars2b = "?distributorLabel ?musicLabel";
   const pat2b = `
-  OPTIONAL { ?movie dbo:distributor ?dist . ?dist rdfs:label ?distributorLabel . FILTER(LANG(?distributorLabel) = "en") }
-  OPTIONAL { ?movie dbo:musicBy ?m . ?m rdfs:label ?musicLabel . FILTER(LANG(?musicLabel) = "en") }
+  OPTIONAL { ?movie dbo:distributor ?dist . ?dist rdfs:label ?distributorLabel . FILTER(LANG(?distributorLabel) = "${lang}") }
+  OPTIONAL { ?movie dbo:musicBy ?m . ?m rdfs:label ?musicLabel . FILTER(LANG(?musicLabel) = "${lang}") }
 `;
   const query2b = makeQuery(vars2b, pat2b);
 
@@ -381,12 +381,13 @@ async function queryDbpediaOffline(uri: string): Promise<DbpediaResult> {
 export async function fetchDbpediaData(
   movieId: string,
   mode: DbpediaMode = "auto",
+  lang: string = "es",
 ): Promise<DbpediaResult | null> {
   const uri = DBPEDIA_LINKS[movieId];
   if (!uri) return null;
 
   if (mode === "online") {
-    return queryDbpediaOnline(uri);
+    return queryDbpediaOnline(uri, lang);
   }
   if (mode === "offline") {
     return queryDbpediaOffline(uri);
@@ -395,7 +396,7 @@ export async function fetchDbpediaData(
   // auto: try offline first, fallback to online
   const offline = await queryDbpediaOffline(uri);
   if (offline.source === "offline") return offline;
-  const online = await queryDbpediaOnline(uri);
+  const online = await queryDbpediaOnline(uri, lang);
   return online.source === "online" ? online : offline.source === "none" ? { ...emptyResult(uri), source: "none" } : offline;
 }
 

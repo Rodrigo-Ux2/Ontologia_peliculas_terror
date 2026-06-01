@@ -25,11 +25,12 @@ peliculasRouter.get("/peliculas/:id/dbpedia", async (req: Request, res: Response
   try {
     const id = String(req.params.id);
     const mode = (req.query.mode as string) || "auto";
+    const lang = (req.query.lang as string) || "es";
     if (!["online", "offline", "auto"].includes(mode)) {
       res.status(400).json({ error: 'Modo inválido. Usar: online, offline o auto' });
       return;
     }
-    const data = await fetchDbpediaData(id, mode as any);
+    const data = await fetchDbpediaData(id, mode as any, lang);
     if (!data) {
       res.status(404).json({ error: "Sin enlace a DBpedia para esta película" });
       return;

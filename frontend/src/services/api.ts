@@ -36,10 +36,10 @@ export const movieService = {
     return response.data;
   },
 
-  async getMovieDbpedia(id: string, mode: 'online' | 'offline' | 'auto' = 'auto'): Promise<DbpediaData | null> {
+  async getMovieDbpedia(id: string, mode: 'online' | 'offline' | 'auto' = 'auto', lang: string = 'es'): Promise<DbpediaData | null> {
     try {
       const response = await api.get<DbpediaData>(`/peliculas/${id}/dbpedia`, {
-        params: { mode },
+        params: { mode, lang },
       });
       return response.data;
     } catch {

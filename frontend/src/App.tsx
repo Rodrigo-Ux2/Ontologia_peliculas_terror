@@ -215,7 +215,7 @@ function App() {
     try {
       const [detail, dbpedia] = await Promise.all([
         movieService.getMovieDetail(movieId),
-        movieService.getMovieDbpedia(movieId, dbpediaMode),
+        movieService.getMovieDbpedia(movieId, dbpediaMode, i18n.language),
       ]);
       setSelectedMovie(detail);
       setDbpediaData(dbpedia);
