@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { movieService } from '../services/api';
 import { Icon } from './Icon';
 
 type ResultType = 'table' | 'message' | 'error' | null;
 
 export function SparqlConsole({ defaultQuery }: { defaultQuery?: string }) {
+  const { t } = useTranslation();
   const [query, setQuery] = useState(defaultQuery ?? `PREFIX : <http://www.semanticweb.org/terror/ontologies/2026/PeliculasTerror#>
 SELECT ?pelicula ?titulo ?anio WHERE {
   ?pelicula a :Pelicula .
@@ -37,10 +39,10 @@ LIMIT 10`);
         setBindings(data.results.bindings);
         setResultType('table');
       } else if (data.success === true) {
-        setMessage('Consulta de actualización ejecutada correctamente.');
+        setMessage(t('sparql.updateSuccess'));
         setResultType('message');
       } else if (data.boolean !== undefined) {
-        setMessage(data.boolean ? 'Verdadero' : 'Falso');
+        setMessage(data.boolean ? t('sparql.true') : t('sparql.false'));
         setResultType('message');
       } else {
         setMessage(JSON.stringify(data, null, 2));
@@ -68,13 +70,13 @@ LIMIT 10`);
     <div className="col-span-1 md:col-span-2">
       <div className="bg-darkish border border-slate-700 rounded-lg">
         <div className="p-4 border-b border-slate-700">
-          <h2 className="text-xl font-bold text-red-500 mb-4">Consola SPARQL</h2>
+          <h2 className="text-xl font-bold text-red-500 mb-4">{t('sparql.title')}</h2>
           <textarea
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             rows={10}
             className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded text-slate-100 font-mono text-sm focus:outline-none focus:border-red-500 resize-y"
-            placeholder="Escribe tu consulta SPARQL aquí..."
+            placeholder={t('sparql.placeholder')}
           />
           <button
             onClick={runQuery}
@@ -86,7 +88,7 @@ LIMIT 10`);
             ) : (
               <Icon type="play" />
             )}
-            {loading ? 'Ejecutando...' : 'Ejecutar'}
+            {loading ? t('sparql.running') : t('sparql.run')}
           </button>
         </div>
 
@@ -126,7 +128,7 @@ LIMIT 10`);
                   ))}
                 </tbody>
               </table>
-              <p className="text-slate-500 text-xs mt-2">{bindings.length} fila(s)</p>
+              <p className="text-slate-500 text-xs mt-2">{t('sparql.rows', { count: bindings.length })}</p>
             </div>
           )}
 
@@ -138,13 +140,13 @@ LIMIT 10`);
 
           {resultType === 'error' && (
             <div className="bg-red-900/50 border border-red-700 rounded p-4 text-red-200">
-              <p className="font-bold mb-1">Error:</p>
+              <p className="font-bold mb-1">{t('sparql.error')}</p>
               <pre className="whitespace-pre-wrap font-mono text-sm">{message}</pre>
             </div>
           )}
 
           {resultType === null && !loading && (
-            <p className="text-slate-500 text-sm">Escribe una consulta SPARQL y presiona "Ejecutar".</p>
+            <p className="text-slate-500 text-sm">{t('sparql.hint')}</p>
           )}
         </div>
       </div>

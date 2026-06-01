@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { MovieListItem } from '../types';
 
 interface MovieCardProps {
@@ -6,6 +7,8 @@ interface MovieCardProps {
 }
 
 export function MovieCard({ movie, onClick }: MovieCardProps) {
+  const { t } = useTranslation();
+
   return (
     <div
       onClick={onClick}
@@ -18,7 +21,7 @@ export function MovieCard({ movie, onClick }: MovieCardProps) {
           </h3>
           {movie.anio && (
             <p className="text-sm text-slate-400 mt-1">
-              Año: <span className="text-slate-300">{movie.anio}</span>
+              {t('movies.year')} <span className="text-slate-300">{movie.anio}</span>
             </p>
           )}
         </div>

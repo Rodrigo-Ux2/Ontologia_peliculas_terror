@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FilterPanel } from './components/FilterPanel';
 import { MovieList } from './components/MovieList';
 import { MovieDetailView } from './components/MovieDetailView';
@@ -156,16 +157,19 @@ function parseSemanticSearch(query: string): Partial<FilterOptions> {
 }
 
 function App() {
+  const { t, i18n } = useTranslation();
   const [tab, setTab] = useState<'movies' | 'sparql'>('movies');
   const [filters, setFilters] = useState<FilterOptions>({});
-  const [searchText, setSearchText] = useState('');
   const [movies, setMovies] = useState<any[]>([]);
   const [sparqlQuery, setSparqlQuery] = useState<string | undefined>(undefined);
+  const [searchText, setSearchText] = useState('');
   const [loading, setLoading] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<MovieDetail | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
   const [dbpediaData, setDbpediaData] = useState<DbpediaData | null>(null);
   const [dbpediaMode, setDbpediaMode] = useState<'auto' | 'online' | 'offline'>('auto');
+
+  const changeLanguage = (lng: string) => i18n.changeLanguage(lng);
 
   const handleFilterChange = (nextFilters: FilterOptions) => {
     if (nextFilters.q !== undefined) {
@@ -229,24 +233,43 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex items-start justify-between">
             <div>
-              <h1 className="text-4xl font-bold text-white mb-2">🎬 Buscador Semántico</h1>
-              <p className="text-red-100">Películas de Terror - Web Semántica</p>
+              <h1 className="text-4xl font-bold text-white mb-2">{t('app.title')}</h1>
+              <p className="text-red-100">{t('app.subtitle')}</p>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-slate-400">DBpedia:</span>
-              {(['auto', 'online', 'offline'] as const).map((m) => (
-                <button
-                  key={m}
-                  onClick={() => setDbpediaMode(m)}
-                  className={`text-xs px-2 py-1 rounded font-medium transition ${
-                    dbpediaMode === m
-                      ? 'bg-orange-600 text-white'
-                      : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
-                  }`}
-                >
-                  {m === 'auto' ? 'Auto' : m === 'online' ? 'Online' : 'Offline'}
-                </button>
-              ))}
+            <div className="flex items-center gap-3">
+              {/* Language selector */}
+              <div className="flex items-center gap-1">
+                {['es', 'en', 'pt'].map((lng) => (
+                  <button
+                    key={lng}
+                    onClick={() => changeLanguage(lng)}
+                    className={`text-xs px-2 py-1 rounded font-medium transition ${
+                      i18n.language === lng
+                        ? 'bg-red-600 text-white'
+                        : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                    }`}
+                  >
+                    {lng === 'es' ? 'ES' : lng === 'en' ? 'EN' : 'PT'}
+                  </button>
+                ))}
+              </div>
+              <div className="w-px h-6 bg-slate-600" />
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-slate-400">{t('app.dbpedia')}</span>
+                {(['auto', 'online', 'offline'] as const).map((m) => (
+                  <button
+                    key={m}
+                    onClick={() => setDbpediaMode(m)}
+                    className={`text-xs px-2 py-1 rounded font-medium transition ${
+                      dbpediaMode === m
+                        ? 'bg-orange-600 text-white'
+                        : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                    }`}
+                  >
+                    {m === 'auto' ? t('app.auto') : m === 'online' ? t('app.online') : t('app.offline')}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -263,7 +286,7 @@ function App() {
               }`}
             >
               <Icon type="movie" />
-              Películas
+              {t('tab.movies')}
             </button>
             <button
               onClick={() => setTab('sparql')}
@@ -274,7 +297,7 @@ function App() {
               }`}
             >
               <Icon type="database" />
-              SPARQL
+              {t('tab.sparql')}
             </button>
           </div>
         </div>
@@ -299,22 +322,22 @@ function App() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="md:col-span-1">
               <div className="bg-darkish p-6 rounded-lg border border-slate-700">
-                <h3 className="text-lg font-bold text-slate-100 mb-3">Ejemplos rápidos</h3>
+                <h3 className="text-lg font-bold text-slate-100 mb-3">{t('examples.title')}</h3>
                 <div className="space-y-2">
                   {[
-                    { label: 'Todas las películas', q: 'PREFIX : <http://www.semanticweb.org/terror/ontologies/2026/PeliculasTerror#>\nSELECT ?p ?titulo ?anio WHERE { ?p a :Pelicula . OPTIONAL { ?p :titulo ?titulo } OPTIONAL { ?p :añoEstreno ?anio } } ORDER BY DESC(?anio) LIMIT 20' },
-                    { label: 'Slashers + Gore alto', q: 'PREFIX : <http://www.semanticweb.org/terror/ontologies/2026/PeliculasTerror#>\nSELECT ?p ?titulo ?gore WHERE { ?p a :Pelicula ; :tieneSubgenero :Slasher ; :nivelGore ?gore . OPTIONAL { ?p :titulo ?titulo } } ORDER BY DESC(?gore)' },
-                    { label: 'Conteo por subgénero', q: 'PREFIX : <http://www.semanticweb.org/terror/ontologies/2026/PeliculasTerror#>\nSELECT ?sg (COUNT(?p) AS ?total) WHERE { ?p a :Pelicula ; :tieneSubgenero ?sg } GROUP BY ?sg ORDER BY DESC(?total)' },
-                    { label: 'Enlaces DBpedia (owl:sameAs)', q: 'PREFIX owl: <http://www.w3.org/2002/07/owl#>\nSELECT ?s ?o WHERE { ?s owl:sameAs ?o }' },
-                    { label: 'Todas las clases con instancias', q: 'SELECT ?clase (COUNT(?i) AS ?total) WHERE { ?i a ?clase } GROUP BY ?clase ORDER BY DESC(?total)' },
-                    { label: 'Triples totales', q: 'SELECT (COUNT(*) AS ?triples) WHERE { ?s ?p ?o }' },
+                    { key: 'allMovies', q: 'PREFIX : <http://www.semanticweb.org/terror/ontologies/2026/PeliculasTerror#>\nSELECT ?p ?titulo ?anio WHERE { ?p a :Pelicula . OPTIONAL { ?p :titulo ?titulo } OPTIONAL { ?p :añoEstreno ?anio } } ORDER BY DESC(?anio) LIMIT 20' },
+                    { key: 'slashersGore', q: 'PREFIX : <http://www.semanticweb.org/terror/ontologies/2026/PeliculasTerror#>\nSELECT ?p ?titulo ?gore WHERE { ?p a :Pelicula ; :tieneSubgenero :Slasher ; :nivelGore ?gore . OPTIONAL { ?p :titulo ?titulo } } ORDER BY DESC(?gore)' },
+                    { key: 'countBySubgenre', q: 'PREFIX : <http://www.semanticweb.org/terror/ontologies/2026/PeliculasTerror#>\nSELECT ?sg (COUNT(?p) AS ?total) WHERE { ?p a :Pelicula ; :tieneSubgenero ?sg } GROUP BY ?sg ORDER BY DESC(?total)' },
+                    { key: 'dbpediaLinks', q: 'PREFIX owl: <http://www.w3.org/2002/07/owl#>\nSELECT ?s ?o WHERE { ?s owl:sameAs ?o }' },
+                    { key: 'allClasses', q: 'SELECT ?clase (COUNT(?i) AS ?total) WHERE { ?i a ?clase } GROUP BY ?clase ORDER BY DESC(?total)' },
+                    { key: 'totalTriples', q: 'SELECT (COUNT(*) AS ?triples) WHERE { ?s ?p ?o }' },
                   ].map((ex) => (
                     <button
-                      key={ex.label}
+                      key={ex.key}
                       onClick={() => { setSparqlQuery(ex.q); setTab('sparql'); }}
                       className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:bg-slate-800 rounded transition"
                     >
-                      {ex.label}
+                      {t(`examples.${ex.key}`)}
                     </button>
                   ))}
                 </div>
