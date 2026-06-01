@@ -55,6 +55,11 @@ function httpFetch(url: string, options: {
 
 export type DbpediaMode = "online" | "offline" | "auto";
 
+export type DbpediaProperty = {
+  predicate: string;
+  values: { display: string }[];
+};
+
 export type DbpediaResult = {
   dbpediaUri: string;
   thumbnail: string | null;
@@ -73,6 +78,7 @@ export type DbpediaResult = {
   productionCompanies: string[];
   distributors: string[];
   musicComposers: string[];
+  allProperties: DbpediaProperty[];
   source: "online" | "offline" | "none";
 };
 
@@ -162,6 +168,7 @@ function emptyResult(uri: string): DbpediaResult {
     country: null, language: null,
     directors: [], actors: [], writers: [], genres: [],
     producers: [], productionCompanies: [], distributors: [], musicComposers: [],
+    allProperties: [],
     source: "none",
   };
 }
@@ -275,6 +282,73 @@ WHERE {
   const firstVal = (key: string): string | undefined =>
     allRows.map((r) => r[key]?.value).find((v) => v !== undefined);
 
+  // ─── Query todas las propiedades disponibles ───
+  const allPropsQuery = `PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?p ?o ?label WHERE {
+  BIND(<${uri}> AS ?movie)
+  ?movie ?p ?o .
+  OPTIONAL { ?o rdfs:label ?label . FILTER(LANG(?label) = "en") }
+  FILTER(
+    STRSTARTS(STR(?p), STR(dbo:)) ||
+    STRSTARTS(STR(?p), STR(dbp:)) ||
+    STR(?p) = STR(foaf:isPrimaryTopicOf)
+  )
+}`;
+
+  const allPropsResult = await runQuery(allPropsQuery, "all");
+  const knownPredicates = new Set([
+    "http://dbpedia.org/ontology/thumbnail",
+    "http://dbpedia.org/ontology/abstract",
+    "http://dbpedia.org/ontology/budget",
+    "http://dbpedia.org/ontology/gross",
+    "http://dbpedia.org/ontology/runtime",
+    "http://dbpedia.org/ontology/country",
+    "http://dbpedia.org/ontology/countryOfOrigin",
+    "http://dbpedia.org/ontology/language",
+    "http://dbpedia.org/ontology/director",
+    "http://dbpedia.org/ontology/starring",
+    "http://dbpedia.org/ontology/writer",
+    "http://dbpedia.org/ontology/genre",
+    "http://dbpedia.org/ontology/producer",
+    "http://dbpedia.org/ontology/productionCompany",
+    "http://dbpedia.org/ontology/distributor",
+    "http://dbpedia.org/ontology/musicBy",
+    "http://xmlns.com/foaf/0.1/isPrimaryTopicOf",
+  ]);
+
+  type PropGroup = { predicate: string; values: Map<string, string> };
+  const propMap = new Map<string, PropGroup>();
+
+  for (const row of (allPropsResult?.bindings ?? []) as Record<string, { value: string }>[]) {
+    const p = row.p?.value;
+    if (!p || knownPredicates.has(p)) continue;
+    const o = row.o?.value;
+    const label = row.label?.value;
+    if (!o) continue;
+    const display = label ?? o;
+    const shortName = p.includes("#") ? p.split("#")[1]
+      : p.replace("http://dbpedia.org/ontology/", "dbo:")
+        .replace("http://dbpedia.org/property/", "dbp:");
+    if (!propMap.has(shortName)) {
+      propMap.set(shortName, { predicate: shortName, values: new Map() });
+    }
+    const group = propMap.get(shortName)!;
+    if (!group.values.has(o)) {
+      group.values.set(o, display);
+    }
+  }
+
+  const allProperties: DbpediaProperty[] = [];
+  for (const [, group] of propMap) {
+    allProperties.push({
+      predicate: group.predicate,
+      values: [...group.values.entries()].map(([, display]) => ({ display })),
+    });
+  }
+
   // Fallback: intentar dbp:budget/gross/runtime si dbo no encontró
   let fbRow: Record<string, { value: string }> | undefined;
   if (!firstVal("budget") || !firstVal("gross") || !firstVal("runtime")) {
@@ -328,6 +402,7 @@ WHERE {
     productionCompanies: companies,
     distributors,
     musicComposers,
+    allProperties,
     source: "online",
   };
 }
@@ -373,6 +448,7 @@ async function queryDbpediaOffline(uri: string): Promise<DbpediaResult> {
     productionCompanies: eArr("productionCompanies"),
     distributors: eArr("distributors"),
     musicComposers: eArr("musicComposers"),
+    allProperties: (entry.allProperties as DbpediaProperty[]) ?? [],
     source: "offline",
   };
 }

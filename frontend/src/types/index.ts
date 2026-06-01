@@ -30,6 +30,11 @@ export interface MovieDetail {
   monstruos: string[];
 }
 
+export interface DbpediaProperty {
+  predicate: string;
+  values: { display: string }[];
+}
+
 export interface DbpediaData {
   dbpediaUri: string;
   thumbnail: string | null;
@@ -48,6 +53,7 @@ export interface DbpediaData {
   productionCompanies: string[];
   distributors: string[];
   musicComposers: string[];
+  allProperties: DbpediaProperty[];
   source: 'online' | 'offline' | 'none';
 }
 

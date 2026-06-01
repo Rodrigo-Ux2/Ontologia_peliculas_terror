@@ -372,6 +372,26 @@ export function MovieDetailView({ movie, loading, dbpediaData, onClose }: MovieD
                         <p className="text-slate-300 text-sm">{dbpediaData.musicComposers.join(', ')}</p>
                       </div>
                     )}
+
+                    {/* Todas las propiedades adicionales */}
+                    {dbpediaData.allProperties && dbpediaData.allProperties.length > 0 && (
+                      <div className="mt-4 pt-4 border-t border-slate-700">
+                        <h4 className="text-sm font-semibold text-orange-400 mb-3">
+                          Todas las propiedades DBpedia ({dbpediaData.allProperties.length})
+                          <span className="text-slate-400 text-xs font-normal ml-2">— datos adicionales</span>
+                        </h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                          {dbpediaData.allProperties.map((prop) => (
+                            <div key={prop.predicate} className="bg-slate-800/50 rounded p-2">
+                              <p className="text-xs text-slate-500 font-mono">{prop.predicate}</p>
+                              <p className="text-sm text-slate-200">
+                                {prop.values.map((v) => v.display).join(', ').slice(0, 120)}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
