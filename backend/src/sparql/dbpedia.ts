@@ -409,9 +409,8 @@ SELECT ?p ?o ?label WHERE {
 }
 
 // ─── Offline: query Fuseki (OntologiaPeliculasTerrorDbpedia) ───
-async function queryDbpediaOffline(uri: string): Promise<DbpediaResult> {
-  const movieId = uri.split("/").pop()?.split("#")[1]?.split("(")[0] ?? "";
-  // Buscar en Fuseki la pelicula por su IRI local en el namespace DBpedia
+async function queryDbpediaOffline(uri: string, movieId: string): Promise<DbpediaResult> {
+  if (!movieId) return { ...emptyResult(uri), source: "none" };
   const N = "http://www.semanticweb.org/terror/ontologies/2026/PeliculasTerror#";
 
   // Primero: datos basicos
@@ -490,11 +489,11 @@ export async function fetchDbpediaData(
     return queryDbpediaOnline(uri, lang);
   }
   if (mode === "offline") {
-    return queryDbpediaOffline(uri);
+    return queryDbpediaOffline(uri, movieId);
   }
 
   // auto: try offline first, fallback to online
-  const offline = await queryDbpediaOffline(uri);
+  const offline = await queryDbpediaOffline(uri, movieId);
   if (offline.source === "offline") return offline;
   const online = await queryDbpediaOnline(uri, lang);
   return online.source === "online" ? online : offline.source === "none" ? { ...emptyResult(uri), source: "none" } : offline;
