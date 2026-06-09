@@ -103,8 +103,7 @@ peliculasRouter.get("/peliculas/:id/translations", async (req: Request, res: Res
     const result: Record<string, string | null> = {};
 
     for (const field of fields) {
-      const key = field === "estilo" ? "estiloFotografia" : field;
-      result[key] = await translateMovieField(id, field, lang);
+      result[field] = await translateMovieField(id, field, lang);
     }
 
     res.json(result);
