@@ -39,18 +39,6 @@ export function MovieDetailView({ movie, loading, dbpediaData, onClose }: MovieD
   const tr = (key: string, original: string): string =>
     translations[key] ?? original;
 
-  // Cuando el idioma no es español, prefiere datos de DBpedia (traducidos)
-  const useDbpedia = lang !== 'es' && dbpediaData != null;
-
-  const owlOrDbpedia = <T,>(owl: T, dbpedia: T | null | undefined): T =>
-    useDbpedia && dbpedia != null ? dbpedia : owl;
-
-  const owlOrDbpediaArr = (owl: string[], dbpedia: string[] | undefined): string[] =>
-    useDbpedia && dbpedia != null && dbpedia.length > 0 ? dbpedia : owl;
-
-  const srcBadge = (fromDbpedia: boolean): 'owl' | 'dbpedia' =>
-    fromDbpedia && useDbpedia ? 'dbpedia' : 'owl';
-
   if (!movie && !loading) return null;
 
   return (
@@ -118,22 +106,22 @@ export function MovieDetailView({ movie, loading, dbpediaData, onClose }: MovieD
 
             {/* Detalles técnicos */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {(movie.duracion || (useDbpedia && dbpediaData?.runtime)) && (
+              {movie.duracion && (
                 <div className="bg-slate-800 rounded p-4">
-                  <p className="text-slate-400 text-sm">{t('detail.duration')}<SourceBadge source={srcBadge(Boolean(dbpediaData?.runtime))} /></p>
-                  <p className="text-slate-200">{owlOrDbpedia(movie.duracion, dbpediaData?.runtime)} {t('detail.minutes')}</p>
+                  <p className="text-slate-400 text-sm">{t('detail.duration')}<SourceBadge source="owl" /></p>
+                  <p className="text-slate-200">{movie.duracion} {t('detail.minutes')}</p>
                 </div>
               )}
-              {(movie.pais || (useDbpedia && dbpediaData?.country)) && (
+              {movie.pais && (
                 <div className="bg-slate-800 rounded p-4">
-                  <p className="text-slate-400 text-sm">{t('detail.country')}<SourceBadge source={srcBadge(Boolean(dbpediaData?.country))} /></p>
-                  <p className="text-slate-200">{owlOrDbpedia(movie.pais, dbpediaData?.country)}</p>
+                  <p className="text-slate-400 text-sm">{t('detail.country')}<SourceBadge source="owl" /></p>
+                  <p className="text-slate-200">{movie.pais}</p>
                 </div>
               )}
-              {(movie.idioma || (useDbpedia && dbpediaData?.language)) && (
+              {movie.idioma && (
                 <div className="bg-slate-800 rounded p-4">
-                  <p className="text-slate-400 text-sm">{t('detail.language')}<SourceBadge source={srcBadge(Boolean(dbpediaData?.language))} /></p>
-                  <p className="text-slate-200">{owlOrDbpedia(movie.idioma, dbpediaData?.language)}</p>
+                  <p className="text-slate-400 text-sm">{t('detail.language')}<SourceBadge source="owl" /></p>
+                  <p className="text-slate-200">{movie.idioma}</p>
                 </div>
               )}
               {movie.clasificacion && (
@@ -142,16 +130,16 @@ export function MovieDetailView({ movie, loading, dbpediaData, onClose }: MovieD
                   <p className="text-slate-200">{tr('clasificacion', movie.clasificacion)}</p>
                 </div>
               )}
-              {(movie.presupuesto || (useDbpedia && dbpediaData?.budget)) && (
+              {movie.presupuesto && (
                 <div className="bg-slate-800 rounded p-4">
-                  <p className="text-slate-400 text-sm">{t('detail.budget')}<SourceBadge source={srcBadge(Boolean(dbpediaData?.budget))} /></p>
-                  <p className="text-slate-200">${(owlOrDbpedia(movie.presupuesto, dbpediaData?.budget)! / 1000000).toFixed(1)}M</p>
+                  <p className="text-slate-400 text-sm">{t('detail.budget')}<SourceBadge source="owl" /></p>
+                  <p className="text-slate-200">${(movie.presupuesto / 1000000).toFixed(1)}M</p>
                 </div>
               )}
-              {(movie.recaudacion || (useDbpedia && dbpediaData?.gross)) && (
+              {movie.recaudacion && (
                 <div className="bg-slate-800 rounded p-4">
-                  <p className="text-slate-400 text-sm">{t('detail.revenue')}<SourceBadge source={srcBadge(Boolean(dbpediaData?.gross))} /></p>
-                  <p className="text-slate-200">${(owlOrDbpedia(movie.recaudacion, dbpediaData?.gross)! / 1000000).toFixed(1)}M</p>
+                  <p className="text-slate-400 text-sm">{t('detail.revenue')}<SourceBadge source="owl" /></p>
+                  <p className="text-slate-200">${(movie.recaudacion / 1000000).toFixed(1)}M</p>
                 </div>
               )}
             </div>
@@ -210,24 +198,24 @@ export function MovieDetailView({ movie, loading, dbpediaData, onClose }: MovieD
               </div>
             )}
 
-            {(movie.directores.length > 0 || (useDbpedia && (dbpediaData?.directors?.length ?? 0) > 0)) && (
+            {movie.directores.length > 0 && (
               <div>
-                <h3 className="font-bold text-slate-100 mb-2">{t('detail.directors')}<SourceBadge source={srcBadge(Boolean(dbpediaData?.directors?.length))} /></h3>
-                <p className="text-slate-300">{owlOrDbpediaArr(movie.directores, dbpediaData?.directors).join(', ')}</p>
+                <h3 className="font-bold text-slate-100 mb-2">{t('detail.directors')}<SourceBadge source="owl" /></h3>
+                <p className="text-slate-300">{movie.directores.join(', ')}</p>
               </div>
             )}
 
-            {(movie.actores.length > 0 || (useDbpedia && (dbpediaData?.actors?.length ?? 0) > 0)) && (
+            {movie.actores.length > 0 && (
               <div>
-                <h3 className="font-bold text-slate-100 mb-2">{t('detail.actors')}<SourceBadge source={srcBadge(Boolean(dbpediaData?.actors?.length))} /></h3>
-                <p className="text-slate-300">{owlOrDbpediaArr(movie.actores, dbpediaData?.actors).slice(0, 5).join(', ')}</p>
+                <h3 className="font-bold text-slate-100 mb-2">{t('detail.actors')}<SourceBadge source="owl" /></h3>
+                <p className="text-slate-300">{movie.actores.slice(0, 5).join(', ')}</p>
               </div>
             )}
 
-            {(movie.guionistas.length > 0 || (useDbpedia && (dbpediaData?.writers?.length ?? 0) > 0)) && (
+            {movie.guionistas.length > 0 && (
               <div>
-                <h3 className="font-bold text-slate-100 mb-2">{t('detail.writers')}<SourceBadge source={srcBadge(Boolean(dbpediaData?.writers?.length))} /></h3>
-                <p className="text-slate-300">{owlOrDbpediaArr(movie.guionistas, dbpediaData?.writers).join(', ')}</p>
+                <h3 className="font-bold text-slate-100 mb-2">{t('detail.writers')}<SourceBadge source="owl" /></h3>
+                <p className="text-slate-300">{movie.guionistas.join(', ')}</p>
               </div>
             )}
 
