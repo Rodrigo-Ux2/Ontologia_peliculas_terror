@@ -201,7 +201,7 @@ export function buildBusquedaPeliculas(f: Filtros): string {
   }`);
   }
 
-  // Búsqueda libre: título, sinopsis y ambientacion
+  // Búsqueda libre: título, sinopsis, ambientacion, estilo, personas y entidades
   // STR() convierte literales con language tag a simple string para CONTAINS
   if (f.textoLibre) {
     const safe = escapeLiteral(f.textoLibre);
@@ -211,6 +211,20 @@ export function buildBusquedaPeliculas(f: Filtros): string {
     { ?pelicula :sinopsis ?_sSearch . FILTER(CONTAINS(LCASE(STR(?_sSearch)), LCASE("${safe}"))) }
     UNION
     { ?pelicula :ambientacion ?_aSearch . FILTER(CONTAINS(LCASE(STR(?_aSearch)), LCASE("${safe}"))) }
+    UNION
+    { ?pelicula :estiloFotografia ?_eSearch . FILTER(CONTAINS(LCASE(STR(?_eSearch)), LCASE("${safe}"))) }
+    UNION
+    { ?pelicula :tieneDirector ?_dir . ?_dir :nombre ?_dirSearch . FILTER(CONTAINS(LCASE(STR(?_dirSearch)), LCASE("${safe}"))) }
+    UNION
+    { ?pelicula :tieneActor ?_act . ?_act :nombre ?_actSearch . FILTER(CONTAINS(LCASE(STR(?_actSearch)), LCASE("${safe}"))) }
+    UNION
+    { ?pelicula :tieneGuionista ?_gui . ?_gui :nombre ?_guiSearch . FILTER(CONTAINS(LCASE(STR(?_guiSearch)), LCASE("${safe}"))) }
+    UNION
+    { ?pelicula :tieneSubgenero ?_sgSearch . FILTER(CONTAINS(LCASE(STRAFTER(STR(?_sgSearch), "#")), LCASE("${safe}"))) }
+    UNION
+    { ?pelicula :tieneMonstruo ?_monSearch . FILTER(CONTAINS(LCASE(STRAFTER(STR(?_monSearch), "#")), LCASE("${safe}"))) }
+    UNION
+    { ?pelicula :disponibleEn ?_platSearch . FILTER(CONTAINS(LCASE(STRAFTER(STR(?_platSearch), "#")), LCASE("${safe}"))) }
   }`);
   }
 
