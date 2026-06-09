@@ -135,6 +135,21 @@ def add_sinopsis(movie_uri, local_id, abstract_en):
         # Fallback: solo el abstract de DBpedia (en ingles)
         g.add((movie_uri, P.sinopsis, Literal(abstract_en, lang="en")))
 
+def translate_and_add(movie_uri, local_id, owl_prop, trans_field, trans_prop=None):
+    """Agrega traducciones EN/PT a una propiedad literal desde la ontologia original"""
+    es_val = get_orig_text(local_id, owl_prop)
+    if not es_val:
+        return
+    # Siempre agregar el original en espanol (sin language tag sera el valor por defecto)
+    g.add((movie_uri, P[owl_prop], Literal(es_val, lang="es")))
+    # Traducciones
+    en_val = trans.get("en", {}).get(trans_field, {}).get(es_val)
+    if en_val:
+        g.add((movie_uri, P[trans_prop or owl_prop], Literal(en_val, lang="en")))
+    pt_val = trans.get("pt", {}).get(trans_field, {}).get(es_val)
+    if pt_val:
+        g.add((movie_uri, P[trans_prop or owl_prop], Literal(pt_val, lang="pt")))
+
 for entry in cache:
     local_id = entry.get("localId", "")
     if not local_id:
@@ -145,6 +160,11 @@ for entry in cache:
 
     # Propiedades
     add_sinopsis(movie_uri, local_id, entry.get("abstract"))
+
+    # Traducciones de campos OWL adicionales
+    translate_and_add(movie_uri, local_id, "ambientacion", "ambientacion")
+    translate_and_add(movie_uri, local_id, "estiloFotografia", "estilo")
+    translate_and_add(movie_uri, local_id, "clasificacionEdad", "clasificacion")
 
     budget = entry.get("budget")
     if budget is not None:
