@@ -1,3 +1,4 @@
+import { sparqlSelect } from "./client.js";
 import { readFile, writeFile, mkdir } from "fs/promises";
 import { existsSync } from "fs";
 import { join, dirname } from "path";
@@ -6,6 +7,37 @@ import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CACHE_DIR = join(__dirname, "..", "..", "data");
 const CACHE_FILE = join(CACHE_DIR, "owl-translations.json");
+
+const PREFIX = `PREFIX : <http://www.semanticweb.org/terror/ontologies/2026/PeliculasTerror#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>`;
+
+const FIELD_MAP: Record<string, string> = {
+  sinopsis: "sinopsis",
+  ambientacion: "ambientacion",
+  estilo: "estiloFotografia",
+};
+
+export async function translateMovieField(
+  movieId: string,
+  field: string,
+  lang: string,
+): Promise<string | null> {
+  if (lang === "es" || !field) return null;
+  const prop = FIELD_MAP[field];
+  if (!prop) return null;
+
+  const query = `${PREFIX}
+SELECT ?val WHERE {
+  :${movieId} :${prop} ?val .
+  FILTER(LANG(?val) = "${lang}")
+}
+LIMIT 1`;
+  const rows = await sparqlSelect(query).catch(() => []);
+  return (rows as Record<string, { value: string }>[])[0]?.val?.value ?? null;
+}
+
+// ─── Para script translate-owl.ts ───
 
 export type TranslationCache = {
   en: Record<string, Record<string, string>>;
