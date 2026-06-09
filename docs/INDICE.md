@@ -5,11 +5,11 @@
 1. **[QUICK_START.md](QUICK_START.md)** - 5 minutos para tener todo corriendo
    - Requisitos mínimos
    - Pasos exactos para Terminal 1-4
-   - Verificación rápida
+   - Verificación de DBpedia, i18n y SPARQL
 
 2. **[CHECKLIST.md](CHECKLIST.md)** - Verificar que todo funciona
-   - Paso a paso de setup
-   - Pruebas funcionales
+   - Paso a paso de setup (incluye DBpedia)
+   - 15 pruebas funcionales
    - Troubleshooting
 
 3. **[README.md](../README.md)** - Descripción general del proyecto
@@ -36,25 +36,27 @@
 
 ### 🔌 API REST (Backend)
 - **[API_FILTROS.md](API_FILTROS.md)** - Referencia de endpoints
-  - GET /api/peliculas (con parámetros)
-  - GET /api/peliculas/:id (detalles)
-  - Filtros disponibles
-  - Ejemplos con curl
+  - GET /api/peliculas (búsqueda semántica en 10 campos)
+  - GET /api/peliculas/:id (detalles OWL)
+  - GET /api/peliculas/:id/dbpedia (datos DBpedia)
+  - GET /api/peliculas/:id/translations (traducciones)
+  - POST /api/sparql (consola SPARQL)
+  - Detección semántica desde texto
 
 ---
 
 ## 🏗️ Arquitectura y diseño
 
 - **[ARQUITECTURA.md](ARQUITECTURA.md)** - Cómo funciona el sistema completo
-  - Flujo de datos (diagrama ASCII)
+  - Flujo de datos (diagrama ASCII con DBpedia e i18n)
   - Componentes principales
-  - Tecnologías por capa
-  - Flujo de una búsqueda paso a paso
-  - Ventajas de la arquitectura
+  - Sistema multi-idioma (3 capas de traducción)
+  - 3 ontologías cargadas en Fuseki
+  - Mejoras implementadas vs futuras
 
 - **[FRONTEND_ESTRUCTURA.md](FRONTEND_ESTRUCTURA.md)** - Detalles del código del frontend
-  - Árbol de carpetas
-  - Archivos por categoría
+  - Árbol de carpetas (incluye i18n, SparqlConsole)
+  - 5 servicios API vs 2 originales
   - Conexiones entre componentes
   - Notas de implementación
 
@@ -70,11 +72,15 @@ cd ~/apache-jena-fuseki-6.1.0
 ./fuseki-server --update --mem /peliculas
 ```
 
-**Terminal 2: Cargar ontología**
+**Terminal 2: Cargar 3 ontologías en Fuseki**
 ```bash
 cd Ontologia_peliculas_terror
-python3 -c "from owlready2 import get_ontology; ..."
-curl -X POST http://localhost:3030/peliculas/data --upload-file ontologia.rdf
+# 1. Ontología original (4168 triples)
+curl -X POST http://localhost:3030/peliculas/data --upload-file ontologia.rdf -H "Content-Type: application/rdf+xml"
+# 2. Enlaces DBpedia
+curl -X POST http://localhost:3030/peliculas/data --upload-file backend/dbpedia-links.ttl -H "Content-Type: text/turtle"
+# 3. Ontología DBpedia con traducciones
+curl -X POST http://localhost:3030/peliculas/data --upload-file OntologiaPeliculasTerrorDbpedia.owl -H "Content-Type: application/rdf+xml"
 ```
 
 **Terminal 3: Backend**
@@ -103,7 +109,7 @@ npm run dev
 
 | Tipo | Parámetro | Ejemplo |
 |------|-----------|---------|
-| Texto | `q` | `?q=ring` |
+| Texto semántico | `q` | `?q=ghost+1990+españa` |
 | Año | `anioMin`, `anioMax` | `?anioMin=1980&anioMax=1989` |
 | Gore | `nivelGoreMin` | `?nivelGoreMin=7` |
 | Suspenso | `nivelSuspensoMin` | `?nivelSuspensoMin=8` |
@@ -114,6 +120,14 @@ npm run dev
 | Edad | `clasificacionEdad` | `?clasificacionEdad=Mayores de 18` |
 | Booleano | `basadaEnHechosReales` | `?basadaEnHechosReales=true` |
 
+### Scripts útiles (backend)
+
+| Comando | Función |
+|---------|---------|
+| `npm run download-dbpedia` | Regenerar cache DBpedia |
+| `npm run translate-owl` | Regenerar traducciones OWL |
+| `npm run create-owl-dbpedia` | Regenerar ontología DBpedia |
+
 ---
 
 ## 🛠️ Desarrollo
@@ -122,33 +136,42 @@ npm run dev
 
 ```
 Ontologia_peliculas_terror/
-├── OntologiaPeliculasTerror.owl    # Ontología (Protégé)
-├── README.md                        # Este archivo
-├── backend/                         # API REST (Express + TS)
-├── frontend/                        # UI (React + TS)
-└── docs/                            # Documentación
+├── OntologiaPeliculasTerror.owl       # Ontología original (Protégé)
+├── OntologiaPeliculasTerrorDbpedia.owl # Ontología DBpedia (generada)
+├── README.md                          # Documentación principal
+├── scripts/
+│   └── crear-ontologia-dbpedia.py     # Script generación ontología DBpedia
+├── backend/
+│   ├── src/
+│   │   ├── routes/
+│   │   │   ├── peliculas.ts           # Endpoints REST
+│   │   │   └── sparql.ts              # Proxy SPARQL
+│   │   └── sparql/
+│   │       ├── client.ts              # Cliente Fuseki
+│   │       ├── queries.ts             # Constructor SPARQL
+│   │       ├── dbpedia.ts             # Servicio DBpedia (online/offline)
+│   │       └── translations.ts        # Traducciones OWL
+│   ├── data/
+│   │   ├── dbpedia-cache.json         # Cache DBpedia (55 películas)
+│   │   └── owl-translations.json      # Traducciones OWL
+│   └── dbpedia-links.ttl              # 55 enlaces owl:sameAs
+├── frontend/
+│   └── src/
+│       ├── i18n/                      # Traducciones UI (es/en/pt)
+│       ├── components/
+│       │   ├── SparqlConsole.tsx       # Consola SPARQL
+│       │   ├── MovieDetailView.tsx     # Modal con badges OWL/DBpedia
+│       │   └── ...                     # FilterPanel, MovieList, etc.
+│       └── services/
+│           └── api.ts                 # 5 métodos vs 2 originales
+└── docs/
     ├── QUICK_START.md              # ← Empieza aquí
     ├── CHECKLIST.md                # Verificar setup
-    ├── README.md                   # (enlace arriba)
     ├── API_FILTROS.md              # Endpoints
     ├── ARQUITECTURA.md             # Diseño del sistema
     ├── FRONTEND_ESTRUCTURA.md      # Código del frontend
     └── INDICE.md                   # Este archivo
 ```
-
-### Cómo agregar una nueva película
-
-1. Editar `OntologiaPeliculasTerror.owl` en Protégé
-2. Convertir a RDF: `python3 script.py`
-3. Cargar en Fuseki: `curl -X POST ...`
-4. Frontend automáticamente la mostrará
-
-### Cómo agregar un nuevo filtro
-
-1. Actualizar `src/types/index.ts` (agregar opción)
-2. Actualizar `src/components/FilterPanel.tsx` (agregar control)
-3. Actualizar `src/services/api.ts` (agregar parámetro)
-4. Backend automáticamente lo procesará
 
 ---
 
@@ -158,7 +181,7 @@ Ontologia_peliculas_terror/
 → [QUICK_START.md](QUICK_START.md)
 
 **¿Algo no funciona?**
-→ [CHECKLIST.md](CHECKLIST.md) → sección Troubleshooting
+→ [CHECKLIST.md](CHECKLIST.md) → Troubleshooting
 
 **¿Cómo uso la interfaz?**
 → [frontend/USAGE.md](../frontend/USAGE.md)
@@ -174,26 +197,26 @@ Ontologia_peliculas_terror/
 
 ---
 
-## 📞 Información de contacto/Recursos
-
-- Ontología: `OntologiaPeliculasTerror.owl`
-- Triplestore: Apache Jena Fuseki 6.1.0
-- Backend: Express 5.2+, TypeScript 5.3+
-- Frontend: React 18.2+, Tailwind CSS 3.3+
-
----
-
 ## 📋 Resumen de características
 
-| Característica | Descripción |
+| Característica | Estado |
 |---|---|
-| 🔍 **13 filtros** | Búsqueda facetada combinable |
-| 🎨 **Interfaz moderna** | React + Tailwind CSS |
-| 📊 **Semántica** | OWL + RDF + SPARQL |
-| ⚡ **Tiempo real** | Debounce 500ms |
-| 📱 **Responsive** | Mobile, tablet, desktop |
-| 🎬 **4168 triples** | Ontología completa |
-| 🔗 **API REST** | 2 endpoints + múltiples parámetros |
+| 🔍 **Búsqueda facetada** (13 filtros) | ✅ |
+| 🎨 **Interfaz React + Tailwind CSS** | ✅ |
+| 📊 **OWL + RDF + SPARQL** | ✅ |
+| 🔗 **DBpedia online** (datos enriquecidos) | ✅ |
+| 📁 **DBpedia offline** (desde Fuseki) | ✅ |
+| 🏷️ **Badges OWL vs DBpedia** | ✅ |
+| 🌐 **Multi-idioma** (es/en/pt) | ✅ |
+| 📝 **Traducción de datos OWL** | ✅ |
+| 📋 **Todas las propiedades DBpedia** | ✅ |
+| 🖥️ **Consola SPARQL integrada** | ✅ |
+| 🔎 **Búsqueda semántica** (10 campos) | ✅ |
+| 🧠 **Detección semántica desde texto** (año, gore, país...) | ✅ |
+| 🗃️ **Ontología DBpedia separada** | ✅ |
+| ⚡ **Tiempo real** (debounce 500ms) | ✅ |
+| 📱 **Responsive** | ✅ |
+| 🔗 **API REST** (5 endpoints) | ✅ |
 
 ---
 
@@ -201,37 +224,51 @@ Ontologia_peliculas_terror/
 
 - **Frontend**: React 18.2+, TypeScript 5.3+, Vite 5.0+, Tailwind 3.3+
 - **Backend**: Express 5.2+, TypeScript 5.3+
-- **Datos**: Apache Jena Fuseki 6.1.0
+- **Datos**: Apache Jena Fuseki 6.1.0, DBpedia SPARQL
 - **Runtime**: Node.js 20+, Java 17+
+- **Multi-idioma**: i18next + react-i18next
+- **Traducción OWL**: Google Translate (cache)
 
 ---
 
 ## ✅ Checklist de documentación
 
-- [x] QUICK_START.md - Guía de 5 minutos
-- [x] CHECKLIST.md - Verificación completa
+- [x] QUICK_START.md - Guía de 5 minutos (actualizado con DBpedia)
+- [x] CHECKLIST.md - 15 pruebas funcionales
 - [x] README.md - Descripción general
-- [x] API_FILTROS.md - Endpoints
-- [x] ARQUITECTURA.md - Diseño del sistema
-- [x] FRONTEND_ESTRUCTURA.md - Código del frontend
+- [x] API_FILTROS.md - 5 endpoints + detección semántica
+- [x] ARQUITECTURA.md - Diagrama completo con DBpedia e i18n
+- [x] FRONTEND_ESTRUCTURA.md - Código del frontend actualizado
 - [x] frontend/README.md - Frontend docs
 - [x] frontend/USAGE.md - Guía de uso
 - [x] INDICE.md - Este archivo
 
-**Última actualización**: Mayo 2026
+**Última actualización**: Junio 2026
 
 ---
 
 ## 🎯 Ejemplos rápidos
 
-### CLI: Buscar slashers de los 80s
+### CLI: Búsqueda semántica
 ```bash
-curl "http://localhost:4000/api/peliculas?subgenero=Slasher&anioMin=1980&anioMax=1989"
+curl "http://localhost:4000/api/peliculas?q=ghost+1990+españa"
 ```
 
-### CLI: Ver detalles de película
+### CLI: DBpedia online
 ```bash
-curl "http://localhost:4000/api/peliculas/TheRing2002"
+curl "http://localhost:4000/api/peliculas/TheShining1980/dbpedia?mode=online&lang=en"
+```
+
+### CLI: Traducciones
+```bash
+curl "http://localhost:4000/api/peliculas/TheShining1980/translations?lang=pt"
+```
+
+### CLI: Consola SPARQL
+```bash
+curl -X POST http://localhost:4000/api/sparql \
+  -H "Content-Type: application/json" \
+  -d '{"query":"SELECT ?p ?t WHERE { ?p a <http://www.semanticweb.org/terror/ontologies/2026/PeliculasTerror#Pelicula> OPTIONAL { ?p <http://www.semanticweb.org/terror/ontologies/2026/PeliculasTerror#titulo> ?t } } LIMIT 5"}'
 ```
 
 ### Browser: Acceder al frontend

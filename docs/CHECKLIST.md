@@ -84,16 +84,16 @@ Esperar a ver:
 
 ---
 
-## 🚀 Ejecución - Paso 2: Cargar ontología
+## 🚀 Ejecución - Paso 2: Cargar ontologías en Fuseki
 
 ### Terminal 2
 ```bash
 cd Ontologia_peliculas_terror
 
-# Convertir OWL a RDF
+# 1. Convertir OWL a RDF
 python3 -c "
 from owlready2 import get_ontology
-onto = get_ontology('file:///ruta/completa/OntologiaPeliculasTerror.owl').load()
+onto = get_ontology('OntologiaPeliculasTerror.owl').load()
 onto.save(file='ontologia.rdf', format='rdfxml')
 print('✓ Guardado: ontologia.rdf')
 "
@@ -102,7 +102,7 @@ print('✓ Guardado: ontologia.rdf')
 - [ ] Se creó `ontologia.rdf`
 - [ ] Archivo contiene RDF/XML
 
-### Cargar en Fuseki
+### Cargar ontología original
 ```bash
 curl -X POST http://localhost:3030/peliculas/data \
   --upload-file ontologia.rdf \
@@ -117,6 +117,26 @@ Respuesta esperada:
 - [ ] HTTP 200
 - [ ] `tripleCount` > 0
 - [ ] Ontología cargada en Fuseki
+
+### Cargar enlaces DBpedia
+```bash
+curl -X POST http://localhost:3030/peliculas/data \
+  --upload-file backend/dbpedia-links.ttl \
+  -H "Content-Type: text/turtle"
+```
+
+- [ ] HTTP 200
+- [ ] 55 enlaces owl:sameAs cargados
+
+### Cargar ontología DBpedia con traducciones
+```bash
+curl -X POST http://localhost:3030/peliculas/data \
+  --upload-file OntologiaPeliculasTerrorDbpedia.owl \
+  -H "Content-Type: application/rdf+xml"
+```
+
+- [ ] HTTP 200
+- [ ] Ontología DBpedia cargada
 
 ---
 
@@ -243,6 +263,63 @@ Abre http://localhost:5173
 - [ ] Filtra por título que contiene "ring"
 - [ ] Resultados específicos
 
+### Test 8: Búsqueda semántica por frase completa
+1. Busca "Una familia debe vivir en completo silencio"
+2. Busca "kubrick"
+3. Busca "ghost 1990"
+- [ ] La frase larga encuentra la película exacta
+- [ ] "kubrick" encuentra The Shining
+- [ ] "ghost" en inglés detecta tipo de monstruo
+
+### Test 9: Búsqueda por niveles desde texto
+1. Busca "gore 8"
+2. Busca "puntuacion 80"
+3. Busca "rt 90"
+- [ ] Filtra por nivel de gore mínimo
+- [ ] Filtra por puntuación mínima
+- [ ] Filtra por Rotten Tomatoes mínimo
+
+### Test 10: DBpedia online
+1. Haz clic en una película
+2. Espera a que cargue el modal
+- [ ] Panel DBpedia visible (abajo)
+- [ ] Muestra datos: budget, gross, etc.
+- [ ] Badge "Online" en verde
+- [ ] Sección "Todas las propiedades DBpedia" con datos adicionales
+
+### Test 11: DBpedia offline
+1. Cambia modo DBpedia a "Offline" en el header
+2. Abre una película
+- [ ] Panel DBpedia muestra datos (desde Fuseki)
+- [ ] Badge "Offline" en azul
+
+### Test 12: Multi-idioma UI
+1. Cambia idioma a EN en el header
+2. Cambia idioma a PT
+- [ ] Todos los textos de la interfaz cambian (filtros, botones, títulos)
+- [ ] Selector de idioma resalta el activo
+
+### Test 13: Traducción de datos
+1. Cambia idioma a EN
+2. Abre una película
+- [ ] Sinopsis se muestra en inglés (badge OWL o DBpedia)
+- [ ] Clasificación de edad traducida (ej: "Not suitable for minors")
+- [ ] Ambientación traducida (ej: "Overlook Hotel in Colorado")
+- [ ] Photography Style traducido
+
+### Test 14: Consola SPARQL
+1. Ve a la pestaña SPARQL
+2. Haz clic en "Todas las películas" (ejemplo)
+3. Haz clic en "Ejecutar"
+- [ ] Editor muestra la consulta
+- [ ] Resultados aparecen en tabla
+- [ ] Muestra cantidad de filas
+
+### Test 15: Badges de origen
+1. Abre una película en español
+- [ ] Datos principales tienen badge [OWL] azul
+- [ ] Panel DBpedia tiene badge [DBpedia] naranja
+
 ---
 
 ## 📊 Verificaciones adicionales
@@ -297,11 +374,16 @@ Abre http://localhost:5173
 
 Si completaste todos los checks:
 
-- ✅ Fuseki está cargado con la ontología
-- ✅ Backend devuelve películas
+- ✅ Fuseki está cargado con las 3 ontologías
+- ✅ Backend devuelve películas con datos enriquecidos
 - ✅ Frontend se conecta y muestra resultados
 - ✅ Filtros funcionan en tiempo real
 - ✅ Detalles se cargan correctamente
+- ✅ DBpedia online y offline funcionan
+- ✅ Multi-idioma (ES/EN/PT) traduce interfaz y datos
+- ✅ Consola SPARQL ejecuta consultas personalizadas
+- ✅ Búsqueda semántica por palabras sueltas y frases completas
+- ✅ Badges muestran origen de cada dato (OWL vs DBpedia)
 
 **Felicidades! Disfruta explorando películas de terror! 🎬👻**
 
