@@ -5,7 +5,7 @@ import { MovieList } from './components/MovieList';
 import { MovieDetailView } from './components/MovieDetailView';
 import { SparqlConsole } from './components/SparqlConsole';
 import { movieService } from './services/api';
-import { MovieDetail, FilterOptions, DbpediaData } from './types';
+import { MovieDetail, FilterOptions, DbpediaData, PAIS_OPTIONS, IDIOMA_OPTIONS, CLASIFICACION_OPTIONS } from './types';
 import { Icon } from './components/Icon';
 import './App.css';
 
@@ -130,10 +130,66 @@ function parseSemanticSearch(query: string): Partial<FilterOptions> {
     }
   }
 
-  // q: enviar el texto original sin modificar para que CONTAINS coincida exactamente
-  // Las keywords semanticas ya se extrajeron para los filtros (tipoMonstruo, etc.)
-  // No eliminar palabras del texto porque CONTAINS busca la frase exacta
-  const cleaned = query.replace(/[,;:.!?¿¡]/g, ' ').replace(/\s+/g, ' ').trim();
+  // Detectar niveles numericos: "gore 8", "suspenso 9", etc.
+  const parseNum = (pattern: RegExp): number | undefined => {
+    const m = remainder.match(pattern);
+    if (m) {
+      remainder = remainder.replace(m[0], '');
+      return Number(m[1]);
+    }
+    return undefined;
+  };
+
+  const goreVal = parseNum(/(?:^|\s)(?:gore|nivel\s*gore)\s*(\d{1,2})/i);
+  if (goreVal !== undefined) semantic.nivelGoreMin = goreVal;
+
+  const suspensoVal = parseNum(/(?:^|\s)(?:suspenso|suspense)\s*(\d{1,2})/i);
+  if (suspensoVal !== undefined) semantic.nivelSuspensoMin = suspensoVal;
+
+  const puntVal = parseNum(/(?:^|\s)(?:puntuacion|score|pontuação)\s*(\d{1,3})/i);
+  if (puntVal !== undefined) semantic.puntuacionMin = puntVal;
+
+  const rtVal = parseNum(/(?:^|\s)(?:rt|rotten\s*tomatoes)\s*(\d{1,3})/i);
+  if (rtVal !== undefined) semantic.rtMin = rtVal;
+
+  // Detectar "hechos reales"
+  if (/hechos\s*reales|true\s*story|historia\s*real|fatos\s*reais/i.test(remainder)) {
+    semantic.basadaEnHechosReales = true;
+    remainder = remainder.replace(/hechos\s*reales|true\s*story|historia\s*real|fatos\s*reais/gi, '');
+  }
+
+  // Detectar pais en el texto (contra PAIS_OPTIONS)
+  for (const pais of PAIS_OPTIONS) {
+    const lower = pais.toLowerCase();
+    if (remainder.includes(lower)) {
+      semantic.pais = pais;
+      remainder = stripKeyword(remainder, lower);
+      break;
+    }
+  }
+
+  // Detectar idioma
+  for (const idioma of IDIOMA_OPTIONS) {
+    const lower = idioma.toLowerCase();
+    if (remainder.includes(lower)) {
+      semantic.idioma = idioma;
+      remainder = stripKeyword(remainder, lower);
+      break;
+    }
+  }
+
+  // Detectar clasificacion de edad
+  for (const clas of CLASIFICACION_OPTIONS) {
+    const lower = clas.toLowerCase();
+    if (remainder.includes(lower)) {
+      semantic.clasificacionEdad = clas;
+      remainder = stripKeyword(remainder, lower);
+      break;
+    }
+  }
+
+  // q: enviar el texto restante (sin palabras ya extraidas como filtros)
+  const cleaned = remainder.replace(/[,;:.!?¿¡]/g, ' ').replace(/\s+/g, ' ').trim();
   if (cleaned) {
     semantic.q = cleaned;
   }
