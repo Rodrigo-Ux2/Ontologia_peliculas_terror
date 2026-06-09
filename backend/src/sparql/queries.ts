@@ -20,7 +20,7 @@ SELECT
 WHERE {
   :${id} a :Pelicula .
   OPTIONAL { :${id} :titulo               ?titulo }
-  OPTIONAL { :${id} :sinopsis             ?sinopsis }
+  OPTIONAL { :${id} :sinopsis ?sinopsis . FILTER(LANG(?sinopsis) = "") }
   OPTIONAL { :${id} :añoEstreno           ?anio }
   OPTIONAL { :${id} :duracion             ?duracion }
   OPTIONAL { :${id} :presupuesto          ?presupuesto }
