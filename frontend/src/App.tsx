@@ -130,9 +130,10 @@ function parseSemanticSearch(query: string): Partial<FilterOptions> {
     }
   }
 
-  // Limpiar espacios multiples y enviar el texto restante como q
-  // No eliminar stopwords porque CONTAINS en SPARQL busca la frase exacta
-  const cleaned = remainder.replace(/[,;:.!?¿¡]/g, ' ').replace(/\s+/g, ' ').trim();
+  // q: enviar el texto original sin modificar para que CONTAINS coincida exactamente
+  // Las keywords semanticas ya se extrajeron para los filtros (tipoMonstruo, etc.)
+  // No eliminar palabras del texto porque CONTAINS busca la frase exacta
+  const cleaned = query.replace(/[,;:.!?¿¡]/g, ' ').replace(/\s+/g, ' ').trim();
   if (cleaned) {
     semantic.q = cleaned;
   }
