@@ -5,6 +5,7 @@ import { fileURLToPath } from "url";
 import { request as httpsRequest } from "https";
 import { request as httpRequest } from "http";
 import { URL } from "url";
+import { sparqlSelect } from "./client.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CACHE_DIR = join(__dirname, "..", "..", "data");
@@ -407,48 +408,71 @@ SELECT ?p ?o ?label WHERE {
   };
 }
 
-// ─── Offline: read from local JSON cache ───
-let cacheData: CacheEntry[] | null = null;
-
-async function loadCache(): Promise<CacheEntry[]> {
-  if (cacheData) return cacheData;
-  try {
-    const raw = await readFile(CACHE_FILE, "utf-8");
-    cacheData = JSON.parse(raw);
-    return cacheData!;
-  } catch {
-    return [];
-  }
-}
-
+// ─── Offline: query Fuseki (OntologiaPeliculasTerrorDbpedia) ───
 async function queryDbpediaOffline(uri: string): Promise<DbpediaResult> {
-  const cache = await loadCache();
-  const entry = cache.find((e: any) => e.dbpediaUri === uri) as Record<string, unknown> | undefined;
-  if (!entry) return { ...emptyResult(uri), source: "none" };
+  const movieId = uri.split("/").pop()?.split("#")[1]?.split("(")[0] ?? "";
+  // Buscar en Fuseki la pelicula por su IRI local en el namespace DBpedia
+  const N = "http://www.semanticweb.org/terror/ontologies/2026/PeliculasTerrorDbpedia#";
 
-  const e = (key: string): string | undefined => (entry[key] as string) ?? undefined;
-  const eNum = (key: string): number | null => (entry[key] as number) ?? null;
-  const eArr = (key: string): string[] => Array.isArray(entry[key]) ? entry[key] as string[] : [];
+  // Primero: datos basicos
+  const basicQuery = `PREFIX : <${N}>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?titulo ?sinopsis ?presupuesto ?recaudacion ?duracion ?paisOrigen ?idioma ?imagen ?urlWikipedia
+WHERE {
+  BIND(IRI(CONCAT("${N}", "${movieId}")) AS ?movie)
+  OPTIONAL { ?movie :titulo ?titulo }
+  OPTIONAL { ?movie :sinopsis ?sinopsis }
+  OPTIONAL { ?movie :presupuesto ?presupuesto }
+  OPTIONAL { ?movie :recaudacion ?recaudacion }
+  OPTIONAL { ?movie :duracion ?duracion }
+  OPTIONAL { ?movie :paisOrigen ?paisOrigen }
+  OPTIONAL { ?movie :idioma ?idioma }
+  OPTIONAL { ?movie :imagen ?imagen }
+  OPTIONAL { ?movie :urlWikipedia ?urlWikipedia }
+}`;
+
+  // Segundo: personas y relaciones
+  const peopleQuery = `PREFIX : <${N}>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?directorNombre ?actorNombre ?guionistaNombre ?subgenero ?productora
+WHERE {
+  BIND(IRI(CONCAT("${N}", "${movieId}")) AS ?movie)
+  OPTIONAL { ?movie :tieneDirector ?d . ?d :nombre ?directorNombre }
+  OPTIONAL { ?movie :tieneActor ?a . ?a :nombre ?actorNombre }
+  OPTIONAL { ?movie :tieneGuionista ?w . ?w :nombre ?guionistaNombre }
+  OPTIONAL { ?movie :tieneSubgenero ?sg }
+  OPTIONAL { ?movie :producidaPor ?p . ?p :nombre ?productora }
+}`;
+
+  const [basicRows, peopleRows] = await Promise.all([
+    sparqlSelect(basicQuery).catch(() => [] as Record<string, { value: string }>[]),
+    sparqlSelect(peopleQuery).catch(() => [] as Record<string, { value: string }>[]),
+  ]);
+
+  const row = (basicRows as Record<string, { value: string }>[])[0] ?? {};
+
+  const allBasic: Record<string, { value: string }>[] = [...(basicRows as Record<string, { value: string }>[]), ...(peopleRows as Record<string, { value: string }>[])];
+  const unique = <T>(arr: T[]): T[] => [...new Set(arr)];
 
   return {
     dbpediaUri: uri,
-    thumbnail: e("thumbnail") ?? null,
-    wikiPage: e("wikiPage") ?? null,
-    abstract: e("abstract") ?? null,
-    budget: eNum("budget"),
-    gross: eNum("gross"),
-    runtime: eNum("runtime"),
-    country: e("country") ?? null,
-    language: e("language") ?? null,
-    directors: eArr("directors"),
-    actors: eArr("actors"),
-    writers: eArr("writers"),
-    genres: eArr("genres"),
-    producers: eArr("producers"),
-    productionCompanies: eArr("productionCompanies"),
-    distributors: eArr("distributors"),
-    musicComposers: eArr("musicComposers"),
-    allProperties: (entry.allProperties as DbpediaProperty[]) ?? [],
+    thumbnail: row.imagen?.value ?? null,
+    wikiPage: row.urlWikipedia?.value ?? null,
+    abstract: row.sinopsis?.value ?? null,
+    budget: row.presupuesto?.value ? Math.round(Number(row.presupuesto.value)) : null,
+    gross: row.recaudacion?.value ? Math.round(Number(row.recaudacion.value)) : null,
+    runtime: row.duracion?.value ? Math.round(Number(row.duracion.value)) : null,
+    country: row.paisOrigen?.value ?? null,
+    language: row.idioma?.value ?? null,
+    directors: unique(allBasic.map((r) => r.directorNombre?.value).filter(Boolean)),
+    actors: unique(allBasic.map((r) => r.actorNombre?.value).filter(Boolean)),
+    writers: unique(allBasic.map((r) => r.guionistaNombre?.value).filter(Boolean)),
+    genres: unique(allBasic.map((r) => r.subgenero?.value).filter(Boolean)),
+    producers: [],
+    productionCompanies: unique(allBasic.map((r) => r.productora?.value).filter(Boolean)),
+    distributors: [],
+    musicComposers: [],
+    allProperties: [],
     source: "offline",
   };
 }
