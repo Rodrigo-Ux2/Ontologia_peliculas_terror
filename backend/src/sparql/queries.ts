@@ -31,10 +31,10 @@ WHERE {
   OPTIONAL { :${id} :puntuacionRottenTomatoes ?rt }
   OPTIONAL { :${id} :paisOrigen           ?pais }
   OPTIONAL { :${id} :idioma               ?idioma }
-  OPTIONAL { :${id} :clasificacionEdad    ?clasificacion }
+  OPTIONAL { :${id} :clasificacionEdad ?clasificacion . FILTER(LANG(?clasificacion) = "") }
   OPTIONAL { :${id} :basadaEnHechosReales ?basadaHechos }
-  OPTIONAL { :${id} :ambientacion         ?ambientacion }
-  OPTIONAL { :${id} :estiloFotografia     ?estilo }
+  OPTIONAL { :${id} :ambientacion ?ambientacion . FILTER(LANG(?ambientacion) = "") }
+  OPTIONAL { :${id} :estiloFotografia ?estilo . FILTER(LANG(?estilo) = "") }
   OPTIONAL { :${id} :tieneDirector  ?dir . ?dir  :nombre ?dirNombre }
   OPTIONAL { :${id} :tieneActor     ?act . ?act  :nombre ?actNombre }
   OPTIONAL { :${id} :tieneGuionista ?gui . ?gui  :nombre ?guiNombre }
