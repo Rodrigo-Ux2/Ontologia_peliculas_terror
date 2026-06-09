@@ -137,15 +137,37 @@ GET /api/peliculas?basadaEnHechosReales=true
 
 ---
 
-#### Búsqueda por texto libre
+#### Búsqueda por texto libre (búsqueda semántica)
 
 | Parámetro | Tipo   | Descripción                        |
 |-----------|--------|------------------------------------|
-| `q`       | string | Busca en el título de la película  |
+| `q`       | string | Busca en **10 campos** mediante palabras sueltas |
+
+**Campos que busca:** título, sinopsis, ambientación, estilo de fotografía, directores, actores, guionistas, subgéneros, monstruos, plataformas.
+
+**Detección semántica desde el texto:**
+| Escribes en la caja de búsqueda | Filtro que se aplica |
+|--------------------------------|---------------------|
+| `1990`, `1980-1989` | `anioMin` / `anioMax` |
+| `gore 8` | `nivelGoreMin=8` |
+| `suspenso 9` | `nivelSuspensoMin=9` |
+| `puntuacion 75` / `score 75` | `puntuacionMin=75` |
+| `rt 90` / `rotten tomatoes 90` | `rtMin=90` |
+| `slasher` / `sobrenatural` | `subgenero=...` |
+| `fantasma` / `vampiro` / `ghost` | `tipoMonstruo=...` |
+| `hechos reales` / `true story` | `basadaEnHechosReales=true` |
+| `Japón` / `Inglés` | `pais=...` / `idioma=...` |
+| `Mayores de 18` | `clasificacionEdad=...` |
 
 ```
-GET /api/peliculas?q=ring
-GET /api/peliculas?q=alien
+# Búsqueda por frase completa
+GET /api/peliculas?q=Una+familia+debe+vivir+en+completo+silencio
+
+# Búsqueda por director
+GET /api/peliculas?q=kubrick
+
+# Búsqueda semántica combinada
+GET /api/peliculas?q=ghost+1990+españa
 ```
 
 ---
@@ -164,6 +186,15 @@ GET /api/peliculas?basadaEnHechosReales=true&plataforma=Netflix&nivelGoreMin=7
 
 # Cine de autor: suspenso alto, puntuación alta, sin gore extremo
 GET /api/peliculas?nivelSuspensoMin=9&puntuacionMin=80&nivelGoreMin=1
+
+# Búsqueda semántica: fantasma en los 90
+GET /api/peliculas?q=fantasma+1995
+
+# Por director
+GET /api/peliculas?q=kubrick
+
+# Frase completa
+GET /api/peliculas?q=Una+familia+debe+vivir+en+completo+silencio
 ```
 
 ---
@@ -242,3 +273,118 @@ GET /api/peliculas/AQuietPlace2018
 |--------|--------------------------------------------|
 | `400`  | `:id` contiene caracteres inválidos        |
 | `404`  | No existe una película con ese `:id`       |
+
+---
+
+## `GET /api/peliculas/:id/dbpedia`
+
+Devuelve datos enriquecidos desde DBpedia para una película.
+
+### Parámetros
+
+| Parámetro | Tipo   | Descripción | Default |
+|-----------|--------|-------------|---------|
+| `mode`    | string | `auto`, `online` o `offline` | `auto` |
+| `lang`    | string | `es`, `en`, `pt` | `es` |
+
+### Ejemplo
+
+```
+GET /api/peliculas/AQuietPlace2018/dbpedia?mode=online&lang=en
+```
+
+### Respuesta
+
+```json
+{
+  "dbpediaUri": "http://dbpedia.org/resource/A_Quiet_Place",
+  "thumbnail": "http://commons.wikimedia.org/...jpg",
+  "wikiPage": "http://en.wikipedia.org/wiki/A_Quiet_Place",
+  "budget": 17000000,
+  "gross": 340900000,
+  "runtime": 90,
+  "country": "United States",
+  "language": "English",
+  "directors": ["John Krasinski"],
+  "actors": ["Emily Blunt", "John Krasinski", "Millicent Simmonds"],
+  "allProperties": [
+    { "predicate": "dbo:cinematography", "values": [{ "display": "Charlotte Bruus Christensen" }] },
+    { "predicate": "dbo:editing", "values": [{ "display": "Michael P. Shawver" }] }
+  ]
+}
+```
+
+### Modos
+
+| Modo | Comportamiento |
+|------|---------------|
+| `auto` | Intenta offline (Fuseki), fallback a online (DBpedia) |
+| `online` | Consulta DBpedia en vivo (requiere internet) |
+| `offline` | Consulta Fuseki (OntologiaPeliculasTerrorDbpedia) |
+
+---
+
+## `GET /api/peliculas/:id/translations`
+
+Devuelve traducciones de los campos de texto de la ontología para un idioma específico.
+
+### Parámetros
+
+| Parámetro | Tipo   | Descripción |
+|-----------|--------|-------------|
+| `lang`    | string | `en` o `pt` |
+
+### Ejemplo
+
+```
+GET /api/peliculas/TheShining1980/translations?lang=en
+```
+
+### Respuesta
+
+```json
+{
+  "sinopsis": "A writer goes progressively insane in an isolated hotel...",
+  "ambientacion": "Overlook Hotel in Colorado",
+  "estilo": "Symmetrical with steadicam"
+}
+```
+
+---
+
+## `POST /api/sparql`
+
+Ejecuta consultas SPARQL directamente contra el triplestore Fuseki.
+
+### Cuerpo
+
+```json
+{
+  "query": "tu consulta SPARQL aquí"
+}
+```
+
+### Formato
+
+Acepta consultas SELECT, ASK, CONSTRUCT, DESCRIBE, INSERT, DELETE, UPDATE.
+
+### Ejemplos
+
+```bash
+# SELECT básico
+curl -X POST http://localhost:4000/api/sparql \
+  -H "Content-Type: application/json" \
+  -d '{"query": "SELECT ?s ?p ?o WHERE { ?s ?p ?o } LIMIT 5"}'
+
+# Películas con su año
+curl -X POST http://localhost:4000/api/sparql \
+  -H "Content-Type: application/json" \
+  -d '{"query": "PREFIX : <http://www.semanticweb.org/terror/ontologies/2026/PeliculasTerror#> SELECT ?titulo ?anio WHERE { ?p a :Pelicula . OPTIONAL { ?p :titulo ?titulo } OPTIONAL { ?p :añoEstreno ?anio } }"}'
+
+# INSERT
+curl -X POST http://localhost:4000/api/sparql \
+  -H "Content-Type: application/json" \
+  -d '{"query": "PREFIX : <http://...> INSERT DATA { :TestMovie :titulo \"Test\" }"}'
+```
+
+También puedes usar la **Consola SPARQL** integrada en el frontend (pestaña SPARQL).
