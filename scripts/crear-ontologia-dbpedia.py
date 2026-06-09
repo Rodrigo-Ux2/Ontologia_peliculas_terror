@@ -11,6 +11,7 @@ from rdflib.namespace import RDF, RDFS, OWL
 
 NS = "http://www.semanticweb.org/terror/ontologies/2026/PeliculasTerrorDbpedia#"
 CACHE_PATH = os.path.join(os.path.dirname(__file__), "..", "backend", "data", "dbpedia-cache.json")
+TRANSLATIONS_PATH = os.path.join(os.path.dirname(__file__), "..", "backend", "data", "owl-translations.json")
 OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "..", "OntologiaPeliculasTerrorDbpedia.owl")
 
 P = Namespace(NS)
@@ -76,8 +77,34 @@ for name, dom, rng in data_props:
 g.serialize(destination=OUTPUT_PATH, format="xml")
 print(f"Ontologia vacia creada: {OUTPUT_PATH}")
 
-# ─── POBLAR DESDE CACHE ───
-print(f"\nCargando cache: {CACHE_PATH}")
+# ─── CARGAR TRADUCCIONES OWL ───
+print(f"Cargando traducciones: {TRANSLATIONS_PATH}")
+with open(TRANSLATIONS_PATH, "r", encoding="utf-8") as f:
+    trans = json.load(f)
+
+print(f"  Sinopsis: {len(trans.get('en',{}).get('sinopsis',{}))} EN, {len(trans.get('pt',{}).get('sinopsis',{}))} PT")
+print(f"  Ambientacion: {len(trans.get('en',{}).get('ambientacion',{}))} EN, {len(trans.get('pt',{}).get('estilo',{}))} estilo PT")
+
+# ─── CARGAR ONTOLOGIA ORIGINAL (para sinopsis en espanol) ───
+ORIG_OWL = os.path.join(os.path.dirname(__file__), "..", "OntologiaPeliculasTerror.owl")
+print(f"Cargando ontologia original: {ORIG_OWL}")
+orig_onto = get_ontology("file://" + os.path.abspath(ORIG_OWL).replace("\\", "/")).load()
+
+def get_orig_text(local_id, prop_name):
+    """Busca en la ontologia original el valor de una propiedad para una pelicula"""
+    ind = orig_onto[local_id]
+    if ind is None:
+        return None
+    prop = getattr(orig_onto, prop_name, None)
+    if prop is None:
+        return None
+    vals = prop[ind]
+    if vals:
+        return str(vals[0])
+    return None
+
+# ─── POBLAR DESDE CACHE DBPEDIA ───
+print(f"\nCargando cache DBpedia: {CACHE_PATH}")
 with open(CACHE_PATH, "r", encoding="utf-8") as f:
     cache = json.load(f)
 print(f"  {len(cache)} peliculas encontradas\n")
@@ -91,6 +118,23 @@ guionista_cache = {}
 subgenero_cache = {}
 productora_cache = {}
 
+def add_sinopsis(movie_uri, local_id, abstract_en):
+    """Agrega sinopsis con tags de idioma es/en/pt usando cache DBpedia + traducciones"""
+    # 1. Espanol desde la ontologia original
+    es_text = get_orig_text(local_id, "sinopsis")
+    if es_text:
+        g.add((movie_uri, P.sinopsis, Literal(es_text, lang="es")))
+        # 2. Traducciones desde el cache OWL
+        en_text = trans.get("en", {}).get("sinopsis", {}).get(es_text)
+        if en_text:
+            g.add((movie_uri, P.sinopsis, Literal(en_text, lang="en")))
+        pt_text = trans.get("pt", {}).get("sinopsis", {}).get(es_text)
+        if pt_text:
+            g.add((movie_uri, P.sinopsis, Literal(pt_text, lang="pt")))
+    elif abstract_en:
+        # Fallback: solo el abstract de DBpedia (en ingles)
+        g.add((movie_uri, P.sinopsis, Literal(abstract_en, lang="en")))
+
 for entry in cache:
     local_id = entry.get("localId", "")
     if not local_id:
@@ -100,9 +144,7 @@ for entry in cache:
     g.add((movie_uri, RDF.type, P.Pelicula))
 
     # Propiedades
-    abstract = entry.get("abstract")
-    if abstract:
-        g.add((movie_uri, P.sinopsis, Literal(abstract, lang="en")))
+    add_sinopsis(movie_uri, local_id, entry.get("abstract"))
 
     budget = entry.get("budget")
     if budget is not None:
