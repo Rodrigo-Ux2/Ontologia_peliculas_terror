@@ -205,11 +205,19 @@ export function buildBusquedaPeliculas(f: Filtros): string {
   // STR() permite buscar en literales con language tag
   if (f.textoLibre) {
     const safe = escapeLiteral(f.textoLibre);
+    const STOPWORDS = new Set([
+      'de','la','el','en','un','una','que','y','a','al','con',
+      'por','para','se','su','sus','del','las','los','le','lo',
+      'si','no','es','mas','más','muy','o','ni','lo','ya','tu',
+      'of','the','and','in','to','is','it','as','at','by','an','or',
+      'do','da','em','um','uma','para','com','se','sua','seu','mais','e',
+      'os','as','na','no','dos','das','aos','nas',
+    ]);
     const words = f.textoLibre
       .split(/\s+/)
-      .filter((w) => w.length > 1)
+      .filter((w) => w.length > 1 && !STOPWORDS.has(w.toLowerCase()))
       .map((w) => escapeLiteral(w));
-    if (words.length === 0) words.push(safe);
+    if (words.length < 2) words.push(safe);
 
     const wf = (varName: string): string =>
       `( ${words.map((w) => `CONTAINS(LCASE(STR(${varName})), LCASE("${w}"))`).join(" || ")} )`;
