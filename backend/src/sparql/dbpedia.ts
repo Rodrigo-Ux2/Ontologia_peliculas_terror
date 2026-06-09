@@ -412,7 +412,7 @@ SELECT ?p ?o ?label WHERE {
 async function queryDbpediaOffline(uri: string): Promise<DbpediaResult> {
   const movieId = uri.split("/").pop()?.split("#")[1]?.split("(")[0] ?? "";
   // Buscar en Fuseki la pelicula por su IRI local en el namespace DBpedia
-  const N = "http://www.semanticweb.org/terror/ontologies/2026/PeliculasTerrorDbpedia#";
+  const N = "http://www.semanticweb.org/terror/ontologies/2026/PeliculasTerror#";
 
   // Primero: datos basicos
   const basicQuery = `PREFIX : <${N}>

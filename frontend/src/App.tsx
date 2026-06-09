@@ -73,14 +73,6 @@ const SEMANTIC_ESCENARIO_MAP: [string, string][] = [
   ['mar', 'mar'],
 ];
 
-// Stopwords que no aportan nada como búsqueda libre de título
-const STOPWORDS = new Set([
-  'año', 'en', 'un', 'una', 'de', 'del', 'el', 'la', 'los', 'las',
-  'con', 'y', 'a', 'al', 'que', 'por', 'para', 'se', 'su', 'sus',
-  'como', 'pero', 'si', 'no', 'lo', 'le', 'les', 'era', 'fue',
-  'sobre', 'entre', 'donde', 'hay', 'esto', 'esta', 'este',
-]);
-
 function stripKeyword(text: string, keyword: string): string {
   // Elimina la keyword completa como palabra/frase, no fragmento de palabra
   const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -138,14 +130,11 @@ function parseSemanticSearch(query: string): Partial<FilterOptions> {
     }
   }
 
-  // Eliminar puntuación suelta y stopwords del texto restante
-  remainder = remainder.replace(/[,;:.!?¿¡]/g, ' ');
-  const meaningfulWords = remainder
-    .split(/\s+/)
-    .filter((w) => w.length > 1 && !STOPWORDS.has(w));
-
-  if (meaningfulWords.length > 0) {
-    semantic.q = meaningfulWords.join(' ');
+  // Limpiar espacios multiples y enviar el texto restante como q
+  // No eliminar stopwords porque CONTAINS en SPARQL busca la frase exacta
+  const cleaned = remainder.replace(/[,;:.!?¿¡]/g, ' ').replace(/\s+/g, ' ').trim();
+  if (cleaned) {
+    semantic.q = cleaned;
   }
 
   return semantic;

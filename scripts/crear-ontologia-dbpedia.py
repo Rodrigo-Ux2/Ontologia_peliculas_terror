@@ -9,7 +9,7 @@ from owlready2 import *
 from rdflib import Graph, Namespace, URIRef, Literal
 from rdflib.namespace import RDF, RDFS, OWL
 
-NS = "http://www.semanticweb.org/terror/ontologies/2026/PeliculasTerrorDbpedia#"
+NS = "http://www.semanticweb.org/terror/ontologies/2026/PeliculasTerror#"
 CACHE_PATH = os.path.join(os.path.dirname(__file__), "..", "backend", "data", "dbpedia-cache.json")
 TRANSLATIONS_PATH = os.path.join(os.path.dirname(__file__), "..", "backend", "data", "owl-translations.json")
 OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "..", "OntologiaPeliculasTerrorDbpedia.owl")
