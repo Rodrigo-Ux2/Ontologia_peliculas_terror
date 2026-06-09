@@ -197,19 +197,20 @@ export function buildBusquedaPeliculas(f: Filtros): string {
     where.push(`{
     { ?pelicula :tieneEscenario ?_escObj . FILTER(CONTAINS(LCASE(STRAFTER(STR(?_escObj), "#")), LCASE("${safeEsc}"))) }
     UNION
-    { ?pelicula :ambientacion ?_ambLit . FILTER(CONTAINS(LCASE(?_ambLit), LCASE("${safeEsc}"))) }
+    { ?pelicula :ambientacion ?_ambLit . FILTER(CONTAINS(LCASE(STR(?_ambLit)), LCASE("${safeEsc}"))) }
   }`);
   }
 
   // Búsqueda libre: título, sinopsis y ambientacion
+  // STR() convierte literales con language tag a simple string para CONTAINS
   if (f.textoLibre) {
     const safe = escapeLiteral(f.textoLibre);
     where.push(`{
-    { ?pelicula :titulo ?_tSearch . FILTER(CONTAINS(LCASE(?_tSearch), LCASE("${safe}"))) }
+    { ?pelicula :titulo ?_tSearch . FILTER(CONTAINS(LCASE(STR(?_tSearch)), LCASE("${safe}"))) }
     UNION
-    { ?pelicula :sinopsis ?_sSearch . FILTER(CONTAINS(LCASE(?_sSearch), LCASE("${safe}"))) }
+    { ?pelicula :sinopsis ?_sSearch . FILTER(CONTAINS(LCASE(STR(?_sSearch)), LCASE("${safe}"))) }
     UNION
-    { ?pelicula :ambientacion ?_aSearch . FILTER(CONTAINS(LCASE(?_aSearch), LCASE("${safe}"))) }
+    { ?pelicula :ambientacion ?_aSearch . FILTER(CONTAINS(LCASE(STR(?_aSearch)), LCASE("${safe}"))) }
   }`);
   }
 
